@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LSY Academic Services - MCQ Practice</title>
+  <title>VU MSCS Admission Test - MCQ Practice</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      color: #333;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #0f3460, #1a1a2e);
+      color: #fff;
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .header-logo {
+      height: 60px;
+      width: auto;
+      background: #fff;
+      border-radius: 50%;
+      padding: 3px;
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    }
+    
+    .header h1 {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
+    .header-info {
+      display: flex;
+      gap: 10px;
+      font-size: 0.85rem;
+      flex-wrap: wrap;
+    }
+    
+    .header-info span {
+      background: rgba(255,255,255,0.15);
+      padding: 5px 12px;
+      border-radius: 20px;
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      background: #f0f4ff;
+      border-bottom: 2px solid #e0e0e0;
+      overflow-x: auto;
+    }
+    
+    .tab {
+      padding: 14px 25px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #555;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
+    
+    .tab:hover {
+      background: #e8eeff;
+      color: #0f3460;
+    }
+    
+    .tab.active {
+      color: #0f3460;
+      border-bottom-color: #e94560;
+      background: #fff;
+    }
+    
+    .tab-content {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+    }
+    
+    .tab-content.active {
+      display: flex;
+    }
+    
+    /* Progress Bar */
+    .progress-container {
+      height: 6px;
+      background: #e0e0e0;
+      position: relative;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #e94560, #0f3460);
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 25px 30px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Section Selector */
+    .section-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .section-btn {
+      padding: 10px 20px;
+      border: 2px solid #0f3460;
+      background: transparent;
+      color: #0f3460;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+    }
+    
+    .section-btn:hover {
+      background: #0f3460;
+      color: #fff;
+    }
+    
+    .section-btn.active {
+      background: #0f3460;
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(15,52,96,0.4);
+    }
+    
+    /* Question Area */
+    .question-area {
+      flex: 1;
+    }
+    
+    .question-number {
+      font-size: 0.8rem;
+      color: #e94560;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    
+    .question-text {
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.6;
+      margin-bottom: 22px;
+      color: #1a1a2e;
+    }
+    
+    /* Options */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 14px 18px;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      background: #fafafa;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .option:hover:not(.disabled) {
+      border-color: #0f3460;
+      background: #f0f4ff;
+      transform: translateX(5px);
+    }
+    
+    .option.selected {
+      border-color: #0f3460;
+      background: #e8eeff;
+    }
+    
+    .option.correct {
+      border-color: #00b894;
+      background: #d4f5e9;
+    }
+    
+    .option.wrong {
+      border-color: #e94560;
+      background: #fde8ec;
+    }
+    
+    .option.disabled {
+      cursor: not-allowed;
+      opacity: 0.9;
+    }
+    
+    .option-letter {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #0f3460;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-right: 14px;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .option.correct .option-letter { background: #00b894; }
+    .option.wrong .option-letter { background: #e94560; }
+    
+    .option-text {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      flex: 1;
+    }
+    
+    .option-icon {
+      font-size: 1.2rem;
+      margin-left: 10px;
+      display: none;
+    }
+    
+    .option.correct .option-icon,
+    .option.wrong .option-icon { display: block; }
+    
+    /* Explanation Box */
+    .explanation-box {
+      display: none;
+      padding: 16px 20px;
+      background: #f8f9fa;
+      border-left: 4px solid #0f3460;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      animation: fadeIn 0.4s ease;
+    }
+    
+    .explanation-box.show { display: block; }
+    
+    .explanation-box h4 {
+      color: #0f3460;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+    
+    .explanation-box p {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #555;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Navigation Buttons - MODIFIED LAYOUT */
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 18px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    
+    /* Left group: Previous + Clear All (kept together) */
+    .nav-left-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    /* Center group: End Test exactly centered */
+    .nav-center-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+      min-width: 120px;
+    }
+    
+    /* Right group: Next / Submit (pushed to extreme right) */
+    .nav-right-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-left: auto;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 11px 25px;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+    
+    .btn-prev { background: #e0e0e0; color: #555; }
+    .btn-prev:hover:not(:disabled) { background: #ccc; transform: translateX(-3px); }
+    
+    .btn-next {
+      background: linear-gradient(135deg, #0f3460, #1a1a2e);
+      color: #fff;
+    }
+    .btn-next:hover:not(:disabled) { transform: translateX(3px); box-shadow: 0 5px 20px rgba(15,52,96,0.4); }
+    
+    .btn-submit {
+      background: linear-gradient(135deg, #e94560, #c23152);
+      color: #fff;
+    }
+    .btn-submit:hover:not(:disabled) { transform: scale(1.03); box-shadow: 0 5px 20px rgba(233,69,96,0.4); }
+    
+    .btn-end {
+      background: linear-gradient(135deg, #e67e22, #d35400);
+      color: #fff;
+    }
+    .btn-end:hover { transform: scale(1.03); box-shadow: 0 5px 20px rgba(230,126,34,0.4); }
+    
+    .btn-clear {
+      background: #95a5a6;
+      color: #fff;
+    }
+    .btn-clear:hover { background: #7f8c8d; transform: scale(1.03); }
+    
+    /* Results Screen */
+    .results-screen {
+      display: block;
+      padding: 25px 30px;
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .results-icon { font-size: 3.5rem; margin-bottom: 12px; }
+    
+    .results-title {
+      font-size: 1.6rem;
+      color: #1a1a2e;
+      margin-bottom: 8px;
+    }
+    
+    .results-subtitle {
+      color: #777;
+      margin-bottom: 25px;
+      font-size: 0.95rem;
+    }
+    
+    .score-circle {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      margin: 0 auto 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: conic-gradient(#00b894 0deg, #00b894 var(--score-deg), #e0e0e0 var(--score-deg), #e0e0e0 360deg);
+    }
+    
+    .score-circle::before {
+      content: '';
+      position: absolute;
+      width: 125px;
+      height: 125px;
+      border-radius: 50%;
+      background: #fff;
+    }
+    
+    .score-value {
+      position: relative;
+      z-index: 1;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #1a1a2e;
+    }
+    
+    .score-label {
+      position: relative;
+      z-index: 1;
+      font-size: 0.8rem;
+      color: #777;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+    
+    .stat-card {
+      padding: 16px;
+      border-radius: 12px;
+      background: #f8f9fa;
+      border: 1px solid #e0e0e0;
+    }
+    
+    .stat-value { font-size: 1.6rem; font-weight: 800; margin-bottom: 4px; }
+    .stat-label { font-size: 0.75rem; color: #777; text-transform: uppercase; letter-spacing: 0.5px; }
+    
+    .stat-correct .stat-value { color: #00b894; }
+    .stat-wrong .stat-value { color: #e94560; }
+    .stat-skipped .stat-value { color: #f39c12; }
+    .stat-total .stat-value { color: #0f3460; }
+    
+    /* Review Section */
+    .review-section {
+      text-align: left;
+      margin-top: 25px;
+    }
+    
+    .review-section h3 {
+      color: #1a1a2e;
+      margin-bottom: 12px;
+      font-size: 1rem;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    
+    .review-item {
+      padding: 12px 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border-left: 4px solid #e0e0e0;
+      background: #fafafa;
+    }
+    
+    .review-item.correct-review { border-left-color: #00b894; background: #f0faf6; }
+    .review-item.wrong-review { border-left-color: #e94560; background: #fef0f3; }
+    .review-item.skipped-review { border-left-color: #f39c12; background: #fef9f0; }
+    
+    .review-q { font-weight: 600; margin-bottom: 6px; font-size: 0.88rem; color: #1a1a2e; }
+    .review-ans { font-size: 0.82rem; margin-bottom: 3px; }
+    .review-ans.correct-text { color: #00b894; font-weight: 600; }
+    .review-ans.wrong-text { color: #e94560; font-weight: 600; }
+    .review-ans.skipped-text { color: #f39c12; font-weight: 600; }
+    
+    .review-explanation {
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 5px;
+      padding: 7px 10px;
+      background: rgba(0,0,0,0.03);
+      border-radius: 6px;
+      line-height: 1.5;
+    }
+    
+    .review-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .btn-restart {
+      background: linear-gradient(135deg, #0f3460, #1a1a2e);
+      color: #fff;
+    }
+    .btn-restart:hover { transform: scale(1.03); box-shadow: 0 5px 20px rgba(15,52,96,0.4); }
+    
+    .btn-review {
+      background: linear-gradient(135deg, #f39c12, #e67e22);
+      color: #fff;
+    }
+    .btn-review:hover { transform: scale(1.03); box-shadow: 0 5px 20px rgba(243,156,18,0.4); }
+    
+    /* Welcome Screen */
+    .welcome-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    
+    .welcome-icon { font-size: 4.5rem; margin-bottom: 18px; }
+    
+    .welcome-title {
+      font-size: 1.8rem;
+      color: #1a1a2e;
+      margin-bottom: 8px;
+    }
+    
+    .welcome-subtitle {
+      color: #777;
+      margin-bottom: 25px;
+      font-size: 1rem;
+      max-width: 550px;
+      line-height: 1.6;
+    }
+    
+    .welcome-features {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .feature {
+      padding: 12px 20px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      border: 1px solid #e0e0e0;
+      min-width: 120px;
+    }
+    
+    .feature-icon { font-size: 1.3rem; margin-bottom: 6px; }
+    .feature-text { font-size: 0.8rem; color: #555; font-weight: 600; }
+    
+    .btn-start {
+      background: linear-gradient(135deg, #e94560, #c23152);
+      color: #fff;
+      padding: 15px 45px;
+      font-size: 1.05rem;
+      border-radius: 50px;
+    }
+    .btn-start:hover { transform: scale(1.05); box-shadow: 0 8px 30px rgba(233,69,96,0.5); }
+    
+    /* Database Tab */
+    .db-content {
+      padding: 30px;
+      max-width: 700px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    .db-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .db-header h2 {
+      color: #1a1a2e;
+      margin-bottom: 8px;
+      font-size: 1.4rem;
+    }
+    
+    .db-header p {
+      color: #777;
+      font-size: 0.9rem;
+    }
+    
+    .db-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    
+    .db-card {
+      padding: 20px;
+      border-radius: 12px;
+      border: 2px solid #e0e0e0;
+      background: #fafafa;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    
+    .db-card:hover {
+      border-color: #0f3460;
+      background: #f0f4ff;
+    }
+    
+    .db-card-icon { font-size: 2rem; margin-bottom: 10px; }
+    .db-card h3 { font-size: 1rem; margin-bottom: 6px; color: #1a1a2e; }
+    .db-card p { font-size: 0.8rem; color: #777; margin-bottom: 12px; }
+    
+    .db-btn {
+      padding: 9px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    
+    .db-btn-export {
+      background: linear-gradient(135deg, #00b894, #00a381);
+      color: #fff;
+    }
+    .db-btn-export:hover { transform: scale(1.03); box-shadow: 0 4px 15px rgba(0,184,148,0.4); }
+    
+    .db-btn-import {
+      background: linear-gradient(135deg, #0f3460, #1a1a2e);
+      color: #fff;
+    }
+    .db-btn-import:hover { transform: scale(1.03); box-shadow: 0 4px 15px rgba(15,52,96,0.4); }
+    
+    .db-stats {
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      border: 1px solid #e0e0e0;
+      margin-bottom: 20px;
+    }
+    
+    .db-stats h3 {
+      font-size: 0.95rem;
+      color: #1a1a2e;
+      margin-bottom: 12px;
+    }
+    
+    .db-stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 0.85rem;
+    }
+    
+    .db-stat-row:last-child { border-bottom: none; }
+    .db-stat-label { color: #777; }
+    .db-stat-value { font-weight: 700; color: #0f3460; }
+    
+    .db-message {
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      margin-top: 15px;
+      display: none;
+    }
+    
+    .db-message.success {
+      background: #d4f5e9;
+      color: #00b894;
+      border: 1px solid #00b894;
+      display: block;
+    }
+    
+    .db-message.error {
+      background: #fde8ec;
+      color: #e94560;
+      border: 1px solid #e94560;
+      display: block;
+    }
+    
+    .db-message.info {
+      background: #e8eeff;
+      color: #0f3460;
+      border: 1px solid #0f3460;
+      display: block;
+    }
+    
+    /* Confirm Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .modal-overlay.show { display: flex; }
+    
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      padding: 25px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .modal-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .modal h3 { font-size: 1.1rem; margin-bottom: 8px; color: #1a1a2e; }
+    .modal p { font-size: 0.88rem; color: #777; margin-bottom: 20px; line-height: 1.5; }
+    
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    
+    .modal-btn {
+      padding: 10px 25px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .modal-btn-confirm {
+      background: linear-gradient(135deg, #e94560, #c23152);
+      color: #fff;
+    }
+    .modal-btn-confirm:hover { transform: scale(1.03); }
+    
+    .modal-btn-cancel {
+      background: #e0e0e0;
+      color: #555;
+    }
+    .modal-btn-cancel:hover { background: #ccc; }
+    
+    /* Hidden */
+    .hidden { display: none !important; }
+    
+    /* Responsive */
+    @media (max-width: 700px) {
+      body { padding: 10px; }
+      .container { border-radius: 12px; }
+      .header { padding: 12px 15px; }
+      .header h1 { font-size: 0.95rem; }
+      .header-logo { height: 45px; }
+      .main-content { padding: 18px; }
+      .question-text { font-size: 1rem; }
+      .option { padding: 11px 14px; }
+      .option-text { font-size: 0.88rem; }
+      .btn { padding: 9px 18px; font-size: 0.85rem; }
+      .results-screen { padding: 18px; }
+      .score-circle { width: 130px; height: 130px; }
+      .score-circle::before { width: 100px; height: 100px; }
+      .score-value { font-size: 1.8rem; }
+      .db-actions { grid-template-columns: 1fr; }
+      .tabs { font-size: 0.8rem; }
+      .tab { padding: 11px 15px; font-size: 0.8rem; }
+      
+      /* Stack nav groups on mobile */
+      .nav-buttons {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .nav-left-group,
+      .nav-center-group,
+      .nav-right-group {
+        width: 100%;
+        justify-content: center;
+        margin-left: 0;
+      }
+      .nav-center-group {
+        order: -1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="header-left">
+      <img src="logo.png" alt="LSY Academic Services" class="header-logo" onerror="this.style.display='none'">
+      <h1>🎓 VU MSCS Admission Test</h1>
+    </div>
+    <div class="header-info">
+      <span id="sectionLabel">English</span>
+      <span id="questionCounter">Q 1 / 150</span>
+      <span id="saveIndicator">💾 Not saved</span>
+    </div>
+  </div>
+  
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-tab="welcome" onclick="switchTab('welcome')">🏠 Home</button>
+    <button class="tab" data-tab="quiz" onclick="switchTab('quiz')">📝 Quiz</button>
+    <button class="tab" data-tab="results" onclick="switchTab('results')">📊 Results</button>
+    <button class="tab" data-tab="review" onclick="switchTab('review')">📋 Review</button>
+    <button class="tab" data-tab="database" onclick="switchTab('database')">💾 Database</button>
+  </div>
+
+  <!-- Welcome Tab -->
+  <div class="tab-content active" id="tab-welcome">
+    <div class="welcome-screen">
+      <div class="welcome-icon">📝</div>
+      <h2 class="welcome-title">VU MSCS Admission Test Practice</h2>
+      <p class="welcome-subtitle">
+        Practice with 450 carefully crafted MCQs covering English, Analytical Reasoning, and Quantitative Reasoning. 
+        Get instant feedback, detailed explanations, and track your progress.
+      </p>
+      <div class="welcome-features">
+        <div class="feature"><div class="feature-icon">📚</div><div class="feature-text">450 Questions</div></div>
+        <div class="feature"><div class="feature-icon">✅</div><div class="feature-text">Instant Feedback</div></div>
+        <div class="feature"><div class="feature-icon">💡</div><div class="feature-text">Explanations</div></div>
+        <div class="feature"><div class="feature-icon">💾</div><div class="feature-text">Auto-Save</div></div>
+        <div class="feature"><div class="feature-icon">📤</div><div class="feature-text">Export/Import</div></div>
+      </div>
+      <button class="btn btn-start" onclick="startQuiz()">🚀 Start Practice</button>
+    </div>
+  </div>
+
+  <!-- Quiz Tab -->
+  <div class="tab-content" id="tab-quiz">
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="main-content">
+      <div class="section-selector" id="sectionSelector">
+        <button class="section-btn active" data-section="english" onclick="switchSection('english')">English (150)</button>
+        <button class="section-btn" data-section="analytical" onclick="switchSection('analytical')">Analytical (150)</button>
+        <button class="section-btn" data-section="quantitative" onclick="switchSection('quantitative')">Quantitative (150)</button>
+      </div>
+
+      <div class="question-area">
+        <div class="question-number" id="questionNumber">Question 1</div>
+        <div class="question-text" id="questionText">Loading...</div>
+        <div class="options" id="optionsContainer"></div>
+        <div class="explanation-box" id="explanationBox">
+          <h4>💡 Explanation</h4>
+          <p id="explanationText"></p>
+        </div>
+      </div>
+
+      <!-- MODIFIED NAVIGATION BUTTONS: End Test centered, Next to extreme right -->
+      <div class="nav-buttons">
+        <!-- Left group: Previous + Clear All -->
+        <div class="nav-left-group">
+          <button class="btn btn-prev" id="prevBtn" onclick="prevQuestion()">← Previous</button>
+          <button class="btn btn-clear" onclick="clearAllAnswers()">🗑️ Clear All</button>
+        </div>
+        
+        <!-- Center group: End Test exactly centered -->
+        <div class="nav-center-group">
+          <button class="btn btn-end" onclick="endTest()">🛑 End Test</button>
+        </div>
+        
+        <!-- Right group: Next / Submit (pushed to extreme right) -->
+        <div class="nav-right-group">
+          <button class="btn btn-next" id="nextBtn" onclick="nextQuestion()">Next →</button>
+          <button class="btn btn-submit hidden" id="submitBtn" onclick="submitQuiz()">📊 View Results</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Tab -->
+  <div class="tab-content" id="tab-results">
+    <div class="results-screen" id="resultsScreen">
+      <div class="results-icon" id="resultsIcon">🎉</div>
+      <h2 class="results-title" id="resultsTitle">Quiz Complete!</h2>
+      <p class="results-subtitle" id="resultsSubtitle">Here's how you performed</p>
+      <div class="score-circle" id="scoreCircle">
+        <div class="score-value" id="scoreValue">0%</div>
+        <div class="score-label">Score</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card stat-correct"><div class="stat-value" id="statCorrect">0</div><div class="stat-label">Correct</div></div>
+        <div class="stat-card stat-wrong"><div class="stat-value" id="statWrong">0</div><div class="stat-label">Wrong</div></div>
+        <div class="stat-card stat-skipped"><div class="stat-value" id="statSkipped">0</div><div class="stat-label">Skipped</div></div>
+        <div class="stat-card stat-total"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total</div></div>
+      </div>
+      <div class="review-buttons">
+        <button class="btn btn-review" onclick="switchTab('review')">📋 View Review</button>
+        <button class="btn btn-restart" onclick="restartQuiz()">🔄 Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review Tab -->
+  <div class="tab-content" id="tab-review">
+    <div class="results-screen">
+      <h2 class="results-title">📋 Answer Review</h2>
+      <p class="results-subtitle">Detailed review of all your answers</p>
+      <div class="review-section" id="reviewSection">
+        <div id="reviewList"></div>
+      </div>
+      <div class="review-buttons">
+        <button class="btn btn-restart" onclick="restartQuiz()">🔄 Restart Quiz</button>
+        <button class="btn btn-review" onclick="switchTab('results')">📊 Back to Results</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Database Tab -->
+  <div class="tab-content" id="tab-database">
+    <div class="db-content">
+      <div class="db-header">
+        <h2>💾 Database Management</h2>
+        <p>Export your progress or import a previously saved database</p>
+      </div>
+      <div class="db-stats" id="dbStats">
+        <h3>📊 Current Progress</h3>
+        <div class="db-stat-row"><span class="db-stat-label">English Answered</span><span class="db-stat-value" id="dbEnglish">0 / 150</span></div>
+        <div class="db-stat-row"><span class="db-stat-label">Analytical Answered</span><span class="db-stat-value" id="dbAnalytical">0 / 150</span></div>
+        <div class="db-stat-row"><span class="db-stat-label">Quantitative Answered</span><span class="db-stat-value" id="dbQuantitative">0 / 150</span></div>
+        <div class="db-stat-row"><span class="db-stat-label">Total Correct</span><span class="db-stat-value" id="dbCorrect">0</span></div>
+        <div class="db-stat-row"><span class="db-stat-label">Total Wrong</span><span class="db-stat-value" id="dbWrong">0</span></div>
+        <div class="db-stat-row"><span class="db-stat-label">Last Saved</span><span class="db-stat-value" id="dbLastSaved">Never</span></div>
+      </div>
+      <div class="db-actions">
+        <div class="db-card">
+          <div class="db-card-icon">📤</div>
+          <h3>Export Database</h3>
+          <p>Download your progress as a .json file</p>
+          <button class="db-btn db-btn-export" onclick="exportDatabase()">📥 Export .json</button>
+        </div>
+        <div class="db-card">
+          <div class="db-card-icon">📥</div>
+          <h3>Import Database</h3>
+          <p>Load a previously saved .json file</p>
+          <button class="db-btn db-btn-import" onclick="document.getElementById('importFile').click()">📤 Import .json</button>
+          <input type="file" id="importFile" accept=".json" style="display:none" onchange="importDatabase(event)">
+        </div>
+      </div>
+      <div class="db-actions" style="grid-template-columns: 1fr;">
+        <div class="db-card">
+          <div class="db-card-icon">🗑️</div>
+          <h3>Reset Everything</h3>
+          <p>Clear all answers and start fresh</p>
+          <button class="db-btn" style="background: linear-gradient(135deg, #e94560, #c23152); color: #fff;" onclick="confirmReset()">🗑️ Reset All Data</button>
+        </div>
+      </div>
+      <div class="db-message" id="dbMessage"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-icon" id="modalIcon">⚠️</div>
+    <h3 id="modalTitle">Are you sure?</h3>
+    <p id="modalText">This action cannot be undone.</p>
+    <div class="modal-buttons">
+      <button class="modal-btn modal-btn-confirm" id="modalConfirm">Yes, Confirm</button>
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// COMPLETE QUESTION BANK - 450 QUESTIONS (unchanged)
+// ============================================================
+const questionBank = {
+  english: [
+    { q: "The committee's decision was so ______ that even its staunchest supporters struggled to defend it.", options: ["prudent", "indefensible", "pragmatic", "lucid"], correct: 1, explanation: "Indefensible means impossible to justify. Even supporters struggled to defend it." },
+    { q: "Choose the word most nearly opposite to 'profligate':", options: ["extravagant", "frugal", "wasteful", "reckless"], correct: 1, explanation: "Profligate = wasteful. Opposite = frugal (careful with money)." },
+    { q: "The professor's lecture was ______ with jargon, making it nearly impossible for undergraduates to follow.", options: ["larded", "devoid", "replete", "Both A and C"], correct: 3, explanation: "Larded = filled with; replete = filled. Both mean full of jargon." },
+    { q: "Analogy: OBSTINATE : PERSUASION ::", options: ["invincible : conquest", "hungry : food", "sleepy : alarm", "angry : appeasement"], correct: 0, explanation: "Obstinate cannot be overcome by persuasion; invincible cannot be overcome by conquest." },
+    { q: "The CEO's ______ remarks during the press conference were interpreted as a tacit admission of guilt.", options: ["equivocal", "unequivocal", "candid", "transparent"], correct: 0, explanation: "Equivocal = ambiguous. Such remarks could be seen as tacit admission." },
+    { q: "Choose the correct sentence:", options: ["Neither of the boys have completed their homework.", "Neither of the boys has completed his homework.", "Neither of the boys have completed his homework.", "Neither of the boy has completed their homework."], correct: 1, explanation: "Neither is singular: has + his." },
+    { q: "Analogy: EPHEMERAL : PERMANENCE ::", options: ["transient : durability", "eternal : forever", "fleeting : brief", "lasting : endurance"], correct: 0, explanation: "Ephemeral = short-lived, opposite of permanence. Transient = short-lived, opposite of durability." },
+    { q: "The scientist's theory was initially met with ______, but later gained widespread acceptance.", options: ["skepticism", "credence", "approbation", "acclaim"], correct: 0, explanation: "Initially met with doubt, later accepted = skepticism." },
+    { q: "Identify the error: 'The number of students in the class are increasing every year.'", options: ["The number", "of students", "are", "every year"], correct: 2, explanation: "'The number' is singular, requires 'is' not 'are'." },
+    { q: "Analogy: MITIGATE : SEVERITY ::", options: ["alleviate : pain", "aggravate : intensity", "augment : increase", "exacerbate : worsen"], correct: 0, explanation: "Mitigate = reduce severity; alleviate = reduce pain." },
+    { q: "His argument was so ______ that it collapsed under the slightest scrutiny.", options: ["robust", "tenuous", "cogent", "sound"], correct: 1, explanation: "Tenuous = weak/flimsy. Collapses under scrutiny." },
+    { q: "The government's ______ approach to taxation alienated both the rich and the poor.", options: ["indiscriminate", "judicious", "equitable", "selective"], correct: 0, explanation: "Indiscriminate = without careful judgment, affecting everyone." },
+    { q: "Analogy: ICONOCLAST : TRADITION ::", options: ["rebel : authority", "conformist : custom", "conservative : change", "radical : status quo"], correct: 0, explanation: "Iconoclast attacks tradition; rebel attacks authority." },
+    { q: "The novel's plot was so ______ that readers found it difficult to predict the ending.", options: ["convoluted", "straightforward", "linear", "simplistic"], correct: 0, explanation: "Convoluted = extremely complex, hard to predict." },
+    { q: "Choose the correct passive voice: 'Someone has stolen my wallet.'", options: ["My wallet has stolen.", "My wallet has been stolen.", "My wallet was stolen by someone.", "My wallet is stolen."], correct: 1, explanation: "Present perfect passive: has + been + past participle." },
+    { q: "Analogy: GARRULOUS : TALKATIVE ::", options: ["laconic : succinct", "verbose : silent", "taciturn : talkative", "reticent : loquacious"], correct: 0, explanation: "Garrulous = talkative; laconic = using few words. Synonyms." },
+    { q: "The diplomat's ______ response avoided committing his country to any specific course of action.", options: ["noncommittal", "decisive", "categorical", "unequivocal"], correct: 0, explanation: "Noncommittal = not committing to a specific position." },
+    { q: "Choose the word most nearly opposite to 'benign':", options: ["malignant", "kind", "gentle", "benevolent"], correct: 0, explanation: "Benign = harmless/kind; malignant = harmful/cancerous." },
+    { q: "Analogy: PLETHORA : SCARCITY ::", options: ["surfeit : dearth", "abundance : excess", "famine : hunger", "deficit : shortage"], correct: 0, explanation: "Plethora = excess; scarcity = shortage. Surfeit = excess; dearth = shortage." },
+    { q: "The evidence was ______; it neither proved nor disproved the hypothesis.", options: ["inconclusive", "definitive", "conclusive", "irrefutable"], correct: 0, explanation: "Neither proved nor disproved = inconclusive." },
+    { q: "Identify the correctly punctuated sentence:", options: ["The meeting, which was scheduled for Monday, has been postponed.", "The meeting which was scheduled for Monday has been postponed.", "The meeting, which was scheduled for Monday has been postponed.", "The meeting which was scheduled for Monday, has been postponed."], correct: 0, explanation: "Non-restrictive clause needs commas on both sides." },
+    { q: "Analogy: PHILANTHROPIST : CHARITY ::", options: ["misanthrope : solitude", "altruist : selfishness", "egoist : generosity", "miser : extravagance"], correct: 0, explanation: "Philanthropist loves humanity/charity; misanthrope hates people/solitude." },
+    { q: "The politician's ______ speech failed to inspire the disillusioned voters.", options: ["pedestrian", "rousing", "eloquent", "stirring"], correct: 0, explanation: "Pedestrian = dull, uninspiring." },
+    { q: "Her ______ demeanor concealed a fierce ambition.", options: ["placid", "turbulent", "aggressive", "volatile"], correct: 0, explanation: "Placid = calm, peaceful. Concealed fierce ambition." },
+    { q: "Analogy: ENIGMA : CLARITY ::", options: ["puzzle : solution", "mystery : intrigue", "riddle : answer", "Both A and C"], correct: 3, explanation: "Enigma needs clarity; puzzle needs solution; riddle needs answer." },
+    { q: "The judge dismissed the lawyer's objection as ______ and irrelevant.", options: ["frivolous", "pertinent", "material", "germane"], correct: 0, explanation: "Frivolous = not serious, irrelevant." },
+    { q: "Choose the correct conditional: 'If I ______ you, I would accept the offer.'", options: ["was", "were", "am", "will be"], correct: 1, explanation: "Subjunctive mood: 'If I were you.'" },
+    { q: "Analogy: AUSTERE : LUXURY ::", options: ["ascetic : indulgence", "hedonist : pleasure", "opulent : wealth", "spartan : comfort"], correct: 0, explanation: "Austere = avoiding luxury; ascetic = avoiding indulgence." },
+    { q: "The author's ______ use of metaphors enriched the narrative.", options: ["judicious", "excessive", "random", "careless"], correct: 0, explanation: "Judicious = showing good judgment. Enriched the narrative." },
+    { q: "Choose the word most nearly opposite to 'obfuscate':", options: ["clarify", "confuse", "muddle", "obscure"], correct: 0, explanation: "Obfuscate = confuse/obscure; opposite = clarify." },
+    { q: "Analogy: QUIXOTIC : PRAGMATIC ::", options: ["idealistic : realistic", "romantic : dreamy", "practical : sensible", "visionary : utopian"], correct: 0, explanation: "Quixotic = idealistic but impractical; pragmatic = realistic." },
+    { q: "The committee's report was criticized for being ______, offering no concrete recommendations.", options: ["vague", "precise", "specific", "detailed"], correct: 0, explanation: "Vague = unclear, no concrete recommendations." },
+    { q: "Choose the correct sentence:", options: ["He is one of the best student in the class.", "He is one of the best students in the class.", "He is one of the best students of the class.", "He is one of best students in class."], correct: 1, explanation: "One of the best + plural noun 'students.'" },
+    { q: "Analogy: INNOCUOUS : HARM ::", options: ["harmless : injury", "toxic : poison", "lethal : danger", "noxious : safety"], correct: 0, explanation: "Innocuous = harmless; causes no injury." },
+    { q: "The CEO's ______ leadership style encouraged innovation and risk-taking.", options: ["laissez-faire", "autocratic", "micromanaging", "dictatorial"], correct: 0, explanation: "Laissez-faire = hands-off leadership, encourages innovation." },
+    { q: "The ______ of the argument was undermined by the speaker's lack of evidence.", options: ["validity", "fallacy", "soundness", "Both A and C"], correct: 3, explanation: "Validity and soundness can both be undermined." },
+    { q: "Analogy: SOPORIFIC : SLEEP ::", options: ["emetic : vomit", "stimulant : alertness", "narcotic : pain", "tonic : energy"], correct: 0, explanation: "Soporific causes sleep; emetic causes vomit." },
+    { q: "The painting's ______ colors evoked a sense of melancholy.", options: ["somber", "vibrant", "garish", "bright"], correct: 0, explanation: "Somber = dark, gloomy, melancholy." },
+    { q: "Identify the error: 'She is more smarter than her sister.'", options: ["She", "more smarter", "than", "her sister"], correct: 1, explanation: "Double comparative error. Should be 'smarter' or 'more smart.'" },
+    { q: "Analogy: PARSIMONIOUS : GENEROSITY ::", options: ["stingy : liberality", "frugal : thrift", "miserly : greed", "economical : savings"], correct: 0, explanation: "Parsimonious = stingy; opposite of generosity. Stingy opposite of liberality." },
+    { q: "The scientist's findings were ______ by subsequent research, confirming his hypothesis.", options: ["corroborated", "refuted", "invalidated", "contradicted"], correct: 0, explanation: "Corroborated = confirmed by subsequent research." },
+    { q: "Choose the word most nearly opposite to 'taciturn':", options: ["garrulous", "silent", "reserved", "reticent"], correct: 0, explanation: "Taciturn = silent; opposite = garrulous (talkative)." },
+    { q: "Analogy: APATHY : ENTHUSIASM ::", options: ["indifference : zeal", "passion : fervor", "zeal : ardor", "excitement : eagerness"], correct: 0, explanation: "Apathy opposite of enthusiasm; indifference opposite of zeal." },
+    { q: "The contract was declared ______ because it had been signed under duress.", options: ["void", "valid", "binding", "enforceable"], correct: 0, explanation: "Void = invalid, not legally binding." },
+    { q: "Choose the correct sentence:", options: ["The data is inconclusive.", "The data are inconclusive.", "The data was inconclusive.", "Both A and C are acceptable."], correct: 1, explanation: "Data is plural of datum, takes plural verb 'are.'" },
+    { q: "Analogy: MAGNANIMOUS : PETTY ::", options: ["generous : small-minded", "noble : grand", "selfish : greedy", "altruistic : selfless"], correct: 0, explanation: "Magnanimous = generous; opposite = petty/small-minded." },
+    { q: "The professor's ______ explanation clarified even the most complex concepts.", options: ["lucid", "ambiguous", "obscure", "convoluted"], correct: 0, explanation: "Lucid = clear, easy to understand." },
+    { q: "The ______ of the evidence led the jury to acquit the defendant.", options: ["paucity", "abundance", "plethora", "surfeit"], correct: 0, explanation: "Paucity = scarcity. Lack of evidence led to acquittal." },
+    { q: "Analogy: CAPRICIOUS : CONSTANCY ::", options: ["fickle : steadiness", "stable : reliability", "volatile : unpredictability", "mercurial : changeability"], correct: 0, explanation: "Capricious = changeable; opposite = constancy. Fickle opposite of steadiness." },
+    { q: "The government's ______ policies failed to address the root causes of inflation.", options: ["myopic", "farsighted", "visionary", "prescient"], correct: 0, explanation: "Myopic = short-sighted, failed to see root causes." },
+    { q: "Choose the word most nearly opposite to 'prodigal':", options: ["thrifty", "wasteful", "extravagant", "lavish"], correct: 0, explanation: "Prodigal = wasteful; opposite = thrifty." },
+    { q: "Analogy: OBSEQUIOUS : SERVILE ::", options: ["fawning : sycophantic", "arrogant : haughty", "dominant : assertive", "rebellious : defiant"], correct: 0, explanation: "Obsequious = servile; fawning = sycophantic. Synonyms." },
+    { q: "The novel's ______ ending left readers unsatisfied and confused.", options: ["ambiguous", "clear", "definitive", "explicit"], correct: 0, explanation: "Ambiguous = unclear, left readers confused." },
+    { q: "Choose the correct sentence:", options: ["Had I known, I would have acted differently.", "Had I knew, I would have acted differently.", "If I had known, I would acted differently.", "If I knew, I would have acted differently."], correct: 0, explanation: "Third conditional with inversion: Had I known." },
+    { q: "Analogy: ICONOCLASTIC : ORTHODOXY ::", options: ["heretical : doctrine", "conventional : tradition", "conservative : custom", "traditional : belief"], correct: 0, explanation: "Iconoclastic = attacking established beliefs; heretical = against doctrine." },
+    { q: "The CEO's ______ remarks alienated both employees and shareholders.", options: ["inflammatory", "conciliatory", "placatory", "soothing"], correct: 0, explanation: "Inflammatory = provoking anger. Alienated people." },
+    { q: "The ______ of the ancient manuscript was a significant archaeological discovery.", options: ["recovery", "loss", "destruction", "disappearance"], correct: 0, explanation: "Recovery of manuscript = significant discovery." },
+    { q: "Analogy: ESOTERIC : ACCESSIBLE ::", options: ["abstruse : comprehensible", "obscure : hidden", "cryptic : mysterious", "arcane : secret"], correct: 0, explanation: "Esoteric = understood by few; opposite = accessible. Abstruse opposite of comprehensible." },
+    { q: "The politician's ______ stance on the issue won him both admirers and detractors.", options: ["uncompromising", "flexible", "malleable", "pliable"], correct: 0, explanation: "Uncompromising = refusing to change. Wins admirers and detractors." },
+    { q: "Identify the error: 'The committee have decided to postpone the meeting.'", options: ["The committee", "have", "to postpone", "the meeting"], correct: 1, explanation: "Committee is singular, takes 'has' in American English." },
+    { q: "Analogy: LETHARGIC : ENERGY ::", options: ["apathetic : interest", "energetic : vitality", "dynamic : vigor", "sluggish : lethargy"], correct: 0, explanation: "Lethargic = lacking energy; apathetic = lacking interest." },
+    { q: "The company's ______ practices led to its eventual bankruptcy.", options: ["profligate", "prudent", "frugal", "economical"], correct: 0, explanation: "Profligate = wasteful. Led to bankruptcy." },
+    { q: "Choose the word most nearly opposite to 'munificent':", options: ["stingy", "generous", "lavish", "bountiful"], correct: 0, explanation: "Munificent = very generous; opposite = stingy." },
+    { q: "Analogy: PANACEA : CURE ::", options: ["placebo : treatment", "antidote : poison", "remedy : illness", "vaccine : disease"], correct: 0, explanation: "Panacea = cure-all; placebo = dummy treatment." },
+    { q: "The professor's ______ tone suggested he was not entirely convinced by his own argument.", options: ["hesitant", "assertive", "confident", "dogmatic"], correct: 0, explanation: "Hesitant tone = not fully convinced." },
+    { q: "Choose the correct sentence:", options: ["The jury has reached its verdict.", "The jury have reached its verdict.", "The jury has reached their verdict.", "The jury have reached their verdict."], correct: 0, explanation: "Jury is singular collective noun, takes 'has' and 'its.'" },
+    { q: "Analogy: VACILLATE : DECISION ::", options: ["waver : commitment", "decide : choice", "resolve : determination", "settle : resolution"], correct: 0, explanation: "Vacillate = waver in decision; waver in commitment." },
+    { q: "The author's ______ prose style made the novel a challenging but rewarding read.", options: ["dense", "simple", "lucid", "transparent"], correct: 0, explanation: "Dense prose = complex, challenging but rewarding." },
+    { q: "The ______ of the dictator was met with widespread celebration.", options: ["downfall", "rise", "ascent", "elevation"], correct: 0, explanation: "Downfall of dictator = met with celebration." },
+    { q: "Analogy: GARRULITY : SILENCE ::", options: ["loquacity : reticence", "verbosity : talkativeness", "eloquence : fluency", "volubility : glibness"], correct: 0, explanation: "Garrulity = talkativeness; opposite = silence. Loquacity opposite of reticence." },
+    { q: "The scientist's ______ approach to research yielded groundbreaking results.", options: ["meticulous", "careless", "sloppy", "haphazard"], correct: 0, explanation: "Meticulous = very careful. Yielded groundbreaking results." },
+    { q: "Choose the word most nearly opposite to 'esoteric':", options: ["exoteric", "obscure", "arcane", "cryptic"], correct: 0, explanation: "Esoteric = understood by few; opposite = exoteric (understood by many)." },
+    { q: "Analogy: IMPECUNIOUS : WEALTH ::", options: ["indigent : money", "affluent : riches", "opulent : poverty", "destitute : fortune"], correct: 0, explanation: "Impecunious = having little money; indigent = very poor." },
+    { q: "The judge's ______ ruling was praised for its fairness and wisdom.", options: ["salomonic", "arbitrary", "biased", "unjust"], correct: 0, explanation: "Salomonic = wise and fair, like King Solomon." },
+    { q: "Choose the correct sentence:", options: ["He is taller than I am.", "He is taller than me.", "He is taller than I.", "Both A and C are correct."], correct: 3, explanation: "Both 'than I am' and 'than I' are grammatically correct." },
+    { q: "Analogy: TRUCULENT : PEACE ::", options: ["belligerent : harmony", "peaceful : calm", "aggressive : conflict", "hostile : war"], correct: 0, explanation: "Truculent = aggressive; opposite = peace. Belligerent opposite of harmony." },
+    { q: "The company's ______ response to the crisis worsened the situation.", options: ["belated", "timely", "prompt", "immediate"], correct: 0, explanation: "Belated = late. Worsened the situation." },
+    { q: "The ______ of the evidence was overwhelming.", options: ["weight", "lightness", "insignificance", "triviality"], correct: 0, explanation: "Weight of evidence = overwhelming." },
+    { q: "Analogy: PERFIDIOUS : LOYALTY ::", options: ["treacherous : fidelity", "faithful : devotion", "reliable : trust", "steadfast : allegiance"], correct: 0, explanation: "Perfidious = treacherous; opposite = loyalty. Treacherous opposite of fidelity." },
+    { q: "The professor's ______ critique of the theory was both rigorous and fair.", options: ["incisive", "superficial", "shallow", "cursory"], correct: 0, explanation: "Incisive = sharp, penetrating. Rigorous and fair." },
+    { q: "Choose the word most nearly opposite to 'indigent':", options: ["affluent", "poor", "destitute", "needy"], correct: 0, explanation: "Indigent = poor; opposite = affluent." },
+    { q: "Analogy: BELLICOSE : WAR ::", options: ["pugnacious : conflict", "peaceful : harmony", "pacific : tranquility", "amicable : friendship"], correct: 0, explanation: "Bellicose = warlike; pugnacious = combative, fond of conflict." },
+    { q: "The novel's ______ narrative structure confused many readers.", options: ["disjointed", "coherent", "linear", "logical"], correct: 0, explanation: "Disjointed = lacking coherence, confusing." },
+    { q: "Choose the correct sentence:", options: ["Neither the teacher nor the students were present.", "Neither the teacher nor the students was present.", "Neither the teacher or the students were present.", "Neither the teacher nor the student were present."], correct: 0, explanation: "With neither...nor, verb agrees with nearer subject 'students' (plural), so 'were.'" },
+    { q: "Analogy: MENDACIOUS : TRUTH ::", options: ["dishonest : honesty", "truthful : veracity", "sincere : candor", "frank : openness"], correct: 0, explanation: "Mendacious = lying; opposite = truth. Dishonest opposite of honesty." },
+    { q: "The CEO's ______ vision transformed the company into a global leader.", options: ["far-sighted", "myopic", "short-sighted", "narrow"], correct: 0, explanation: "Far-sighted = visionary. Transformed company." },
+    { q: "The ______ of the argument was evident to everyone.", options: ["fallacy", "validity", "soundness", "cogency"], correct: 0, explanation: "Fallacy = mistaken belief, evident to everyone." },
+    { q: "Analogy: PUSILLANIMOUS : COURAGE ::", options: ["timorous : bravery", "brave : valor", "courageous : fortitude", "bold : audacity"], correct: 0, explanation: "Pusillanimous = cowardly; opposite = courage. Timorous opposite of bravery." },
+    { q: "The government's ______ handling of the crisis drew widespread criticism.", options: ["inept", "competent", "skillful", "adept"], correct: 0, explanation: "Inept = incompetent. Drew criticism." },
+    { q: "Choose the word most nearly opposite to 'obstreperous':", options: ["quiet", "noisy", "loud", "clamorous"], correct: 0, explanation: "Obstreperous = noisy, unruly; opposite = quiet." },
+    { q: "Analogy: PROPITIOUS : FAVORABLE ::", options: ["auspicious : promising", "inauspicious : unlucky", "ominous : threatening", "portentous : significant"], correct: 0, explanation: "Propitious = favorable; auspicious = promising. Synonyms." },
+    { q: "The author's ______ style made the complex subject accessible to lay readers.", options: ["lucid", "opaque", "abstruse", "esoteric"], correct: 0, explanation: "Lucid = clear, accessible to lay readers." },
+    { q: "Choose the correct sentence:", options: ["The number of applicants has increased.", "The number of applicants have increased.", "A number of applicants has increased.", "Both A and C are correct."], correct: 0, explanation: "'The number' is singular, takes 'has.'" },
+    { q: "Analogy: SATURNINE : GLOOMY ::", options: ["mercurial : volatile", "cheerful : happy", "jovial : merry", "sanguine : optimistic"], correct: 0, explanation: "Saturnine = gloomy; mercurial = volatile. Both describe temperaments." },
+    { q: "The committee's ______ deliberations lasted for hours without resolution.", options: ["interminable", "brief", "concise", "short"], correct: 0, explanation: "Interminable = endless. Lasted for hours." },
+    { q: "The ______ of the contract was disputed by both parties.", options: ["validity", "invalidity", "legality", "Both A and C"], correct: 3, explanation: "Validity and legality can both be disputed." },
+    { q: "Analogy: UBIQUITOUS : OMNIPRESENT ::", options: ["widespread : pervasive", "rare : scarce", "uncommon : unusual", "limited : restricted"], correct: 0, explanation: "Ubiquitous = omnipresent; widespread = pervasive. Synonyms." },
+    { q: "The professor's ______ remarks were intended to provoke discussion.", options: ["provocative", "bland", "insipid", "dull"], correct: 0, explanation: "Provocative = intended to provoke discussion." },
+    { q: "Choose the word most nearly opposite to 'sagacious':", options: ["foolish", "wise", "astute", "shrewd"], correct: 0, explanation: "Sagacious = wise; opposite = foolish." },
+    { q: "Analogy: VORACIOUS : APPETITE ::", options: ["avid : enthusiasm", "indifferent : apathy", "insatiable : hunger", "Both A and C"], correct: 3, explanation: "Voracious = having huge appetite; avid = enthusiasm; insatiable = cannot be satisfied." },
+    { q: "The novel's ______ characters were difficult to sympathize with.", options: ["unsympathetic", "engaging", "likable", "endearing"], correct: 0, explanation: "Unsympathetic = difficult to sympathize with." },
+    { q: "Choose the correct sentence:", options: ["She is one of the few who have succeeded.", "She is one of the few who has succeeded.", "She is one of the few who have succeed.", "She is one of the few who has succeed."], correct: 0, explanation: "'Who' refers to 'few' (plural), takes 'have.'" },
+    { q: "Analogy: PERSPICACIOUS : INSIGHT ::", options: ["discerning : judgment", "obtuse : understanding", "dull : perception", "stupid : wisdom"], correct: 0, explanation: "Perspicacious = keen insight; discerning = good judgment." },
+    { q: "The company's ______ policies led to a decline in employee morale.", options: ["draconian", "lenient", "permissive", "indulgent"], correct: 0, explanation: "Draconian = harsh, severe. Lowered morale." },
+    { q: "The ______ of the evidence was questioned by the defense.", options: ["authenticity", "fake", "forgery", "counterfeit"], correct: 0, explanation: "Authenticity of evidence questioned." },
+    { q: "Analogy: RECALCITRANT : OBEDIENCE ::", options: ["defiant : compliance", "obedient : submission", "submissive : docility", "compliant : conformity"], correct: 0, explanation: "Recalcitrant = resisting authority; opposite = obedience. Defiant opposite of compliance." },
+    { q: "The scientist's ______ conclusions were based on years of research.", options: ["definitive", "tentative", "provisional", "speculative"], correct: 0, explanation: "Definitive = conclusive, based on years of research." },
+    { q: "Choose the word most nearly opposite to 'loquacious':", options: ["taciturn", "talkative", "garrulous", "verbose"], correct: 0, explanation: "Loquacious = talkative; opposite = taciturn (silent)." },
+    { q: "Analogy: ACRIMONIOUS : BITTERNESS ::", options: ["caustic : sarcasm", "pleasant : sweetness", "amiable : friendliness", "cordial : warmth"], correct: 0, explanation: "Acrimonious = bitter; caustic = sarcastic/bitter." },
+    { q: "The professor's ______ analysis of the poem revealed hidden meanings.", options: ["astute", "superficial", "shallow", "cursory"], correct: 0, explanation: "Astute = clever. Revealed hidden meanings." },
+    { q: "Choose the correct sentence:", options: ["He is the only one of those students who has passed.", "He is the only one of those students who have passed.", "He is the only one of those students who has pass.", "He is the only one of those students who have pass."], correct: 0, explanation: "'Only one' is singular, takes 'has.'" },
+    { q: "Analogy: INSCRUTABLE : UNDERSTANDING ::", options: ["impenetrable : comprehension", "transparent : clarity", "obvious : simplicity", "clear : lucidity"], correct: 0, explanation: "Inscrutable = impossible to understand; impenetrable = impossible to comprehend." },
+    { q: "The government's ______ response to the disaster was criticized as too slow.", options: ["tardy", "prompt", "swift", "immediate"], correct: 0, explanation: "Tardy = slow. Criticized as too slow." },
+    { q: "The ______ of the theory was eventually accepted by the scientific community.", options: ["validity", "fallacy", "invalidity", "unsoundness"], correct: 0, explanation: "Validity of theory eventually accepted." },
+    { q: "Analogy: OSTENTATIOUS : MODESTY ::", options: ["flamboyant : restraint", "humble : simplicity", "plain : austerity", "unassuming : humility"], correct: 0, explanation: "Ostentatious = showy; opposite = modesty. Flamboyant opposite of restraint." },
+    { q: "The author's ______ wit made the novel a delight to read.", options: ["mordant", "dull", "bland", "insipid"], correct: 0, explanation: "Mordant = sharp, biting wit. Delight to read." },
+    { q: "Choose the word most nearly opposite to 'prolific':", options: ["barren", "productive", "fertile", "fruitful"], correct: 0, explanation: "Prolific = productive; opposite = barren." },
+    { q: "Analogy: ANTIPATHY : LIKING ::", options: ["aversion : affection", "fondness : love", "attraction : appeal", "sympathy : compassion"], correct: 0, explanation: "Antipathy = dislike; opposite = liking. Aversion opposite of affection." },
+    { q: "The professor's ______ lectures were always well-attended.", options: ["erudite", "ignorant", "uneducated", "illiterate"], correct: 0, explanation: "Erudite = learned. Well-attended lectures." },
+    { q: "Choose the correct sentence:", options: ["The data suggest that the hypothesis is correct.", "The data suggests that the hypothesis is correct.", "The data suggest that the hypothesis are correct.", "The data suggests that the hypothesis are correct."], correct: 0, explanation: "Data plural, takes 'suggest.' Hypothesis singular, takes 'is.'" },
+    { q: "Analogy: EQUIVOCATE : CLARITY ::", options: ["prevaricate : truth", "lie : honesty", "deceive : trust", "Both A and B"], correct: 3, explanation: "Equivocate = avoid clarity; prevaricate = avoid truth; lie opposite of honesty." },
+    { q: "The company's ______ approach to innovation kept it ahead of competitors.", options: ["forward-thinking", "regressive", "backward", "reactionary"], correct: 0, explanation: "Forward-thinking = innovative. Kept ahead." },
+    { q: "The ______ of the argument was evident in its logical structure.", options: ["cogency", "weakness", "fallacy", "flaw"], correct: 0, explanation: "Cogency = logical force. Evident in structure." },
+    { q: "Analogy: IMPASSIVE : EMOTION ::", options: ["stoic : feeling", "emotional : sentiment", "passionate : ardor", "expressive : feeling"], correct: 0, explanation: "Impassive = showing no emotion; stoic = enduring without feeling." },
+    { q: "The judge's ______ decision was overturned on appeal.", options: ["erroneous", "correct", "accurate", "sound"], correct: 0, explanation: "Erroneous = incorrect. Overturned on appeal." },
+    { q: "Choose the word most nearly opposite to 'nefarious':", options: ["virtuous", "wicked", "evil", "villainous"], correct: 0, explanation: "Nefarious = wicked; opposite = virtuous." },
+    { q: "Analogy: MAGNILOQUENT : SIMPLE SPEECH ::", options: ["pompous : plain language", "eloquent : fluent", "articulate : expressive", "silver-tongued : persuasive"], correct: 0, explanation: "Magniloquent = pompous, high-flown speech; opposite = simple speech." },
+    { q: "The novel's ______ plot kept readers guessing until the end.", options: ["intricate", "simple", "straightforward", "plain"], correct: 0, explanation: "Intricate = complex. Kept readers guessing." },
+    { q: "Choose the correct sentence:", options: ["Each of the students has submitted the assignment.", "Each of the students have submitted the assignment.", "Each of the student has submitted the assignment.", "Each of the students has submit the assignment."], correct: 0, explanation: "Each is singular, takes 'has.' Students plural after 'of the.'" },
+    { q: "Analogy: PARSIMONY : EXTRAVAGANCE ::", options: ["frugality : wastefulness", "thrift : economy", "saving : thrift", "economy : frugality"], correct: 0, explanation: "Parsimony = frugality; opposite = extravagance. Frugality opposite of wastefulness." },
+    { q: "The scientist's ______ findings challenged long-held beliefs.", options: ["revolutionary", "conventional", "traditional", "orthodox"], correct: 0, explanation: "Revolutionary = challenging long-held beliefs." },
+    { q: "The ______ of the manuscript was confirmed by carbon dating.", options: ["authenticity", "forgery", "fake", "counterfeit"], correct: 0, explanation: "Authenticity confirmed by carbon dating." },
+    { q: "Analogy: TRENCHANT : INSIPID ::", options: ["incisive : dull", "sharp : keen", "cutting : biting", "pointed : acute"], correct: 0, explanation: "Trenchant = sharp/incisive; opposite = insipid/dull." },
+    { q: "The professor's ______ remarks were both insightful and provocative.", options: ["piquant", "bland", "insipid", "dull"], correct: 0, explanation: "Piquant = pleasantly stimulating. Insightful and provocative." },
+    { q: "Choose the word most nearly opposite to 'prodigious':", options: ["insignificant", "enormous", "huge", "immense"], correct: 0, explanation: "Prodigious = enormous; opposite = insignificant." },
+    { q: "Analogy: SUPERCILIOUS : HUMILITY ::", options: ["haughty : modesty", "humble : meekness", "modest : simplicity", "unassuming : diffidence"], correct: 0, explanation: "Supercilious = haughty; opposite = humility. Haughty opposite of modesty." },
+    { q: "The company's ______ practices were exposed by investigative journalists.", options: ["unscrupulous", "ethical", "moral", "principled"], correct: 0, explanation: "Unscrupulous = unethical. Exposed by journalists." },
+    { q: "Choose the correct sentence:", options: ["None of the books is missing.", "None of the books are missing.", "None of the book is missing.", "None of the books were missing."], correct: 0, explanation: "None traditionally singular, takes 'is.'" },
+    { q: "Analogy: VITUPERATIVE : PRAISE ::", options: ["abusive : compliment", "laudatory : acclaim", "commendatory : approval", "flattering : adulation"], correct: 0, explanation: "Vituperative = abusive; opposite = praise. Abusive opposite of compliment." },
+    { q: "The author's ______ descriptions brought the setting to life.", options: ["vivid", "dull", "drab", "colorless"], correct: 0, explanation: "Vivid = lively. Brought setting to life." },
+    { q: "The ______ of the evidence was beyond dispute.", options: ["cogency", "weakness", "doubt", "uncertainty"], correct: 0, explanation: "Cogency = logical force. Beyond dispute." },
+    { q: "Analogy: INELUCTABLE : AVOIDANCE ::", options: ["inevitable : escape", "avoidable : prevention", "escapable : evasion", "certain : uncertainty"], correct: 0, explanation: "Ineluctable = unavoidable; inevitable opposite of escape." },
+    { q: "The professor's ______ style of teaching engaged even the most reluctant students.", options: ["dynamic", "static", "passive", "inert"], correct: 0, explanation: "Dynamic = energetic. Engaged students." },
+    { q: "Choose the word most nearly opposite to 'perspicuous':", options: ["obscure", "clear", "lucid", "transparent"], correct: 0, explanation: "Perspicuous = clear; opposite = obscure." },
+    { q: "Analogy: GRANDILOQUENT : BOMBASTIC ::", options: ["pompous : pretentious", "simple : plain", "modest : humble", "restrained : subdued"], correct: 0, explanation: "Grandiloquent = pompous; bombastic = pretentious. Synonyms." },
+    { q: "The novel's ______ themes resonated with readers of all ages.", options: ["universal", "parochial", "narrow", "provincial"], correct: 0, explanation: "Universal = applicable to all. Resonated with all ages." },
+    { q: "Choose the correct sentence:", options: ["The jury has returned its verdict.", "The jury have returned its verdict.", "The jury has returned their verdict.", "The jury have returned their verdict."], correct: 0, explanation: "Jury singular, takes 'has' and 'its.'" },
+    { q: "Analogy: LUGUBRIOUS : MOURNING ::", options: ["doleful : sorrow", "cheerful : joy", "joyful : happiness", "merry : glee"], correct: 0, explanation: "Lugubrious = mournful; doleful = sorrowful." },
+    { q: "The company's ______ response to the allegations was seen as an admission of guilt.", options: ["evasive", "direct", "frank", "candid"], correct: 0, explanation: "Evasive = avoiding direct answer. Seen as guilt." },
+    { q: "The ______ of the argument was apparent to all.", options: ["cogency", "fallacy", "weakness", "flaw"], correct: 0, explanation: "Cogency = logical force. Apparent to all." }
+  ],
+  analytical: [
+    { q: "If all roses are flowers and some flowers fade quickly, which of the following statements is logically correct?", options: ["Some roses fade quickly.", "All flowers are roses.", "No roses fade quickly.", "None of the above"], correct: 3, explanation: "We cannot conclude anything about roses fading. None of A, B, C follow." },
+    { q: "Five friends A, B, C, D, E sit in a row. A is to the left of B but to the right of C. D is to the right of B but to the left of E. Who is in the middle?", options: ["A", "B", "C", "D"], correct: 1, explanation: "Arrangement: C - A - B - D - E. B is in the middle." },
+    { q: "If P > Q, Q > R, and R > S, which is true?", options: ["P < S", "P > S", "P = S", "Cannot be determined"], correct: 1, explanation: "By transitivity: P > Q > R > S, so P > S." },
+    { q: "Statement: All engineers are graduates. Some graduates are managers. Conclusion: Some engineers are managers.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 1, explanation: "No definite link between engineers and managers. Conclusion does not follow." },
+    { q: "In a certain code, COMPUTER is written as RFUVQNPC. How is MEDICINE written?", options: ["EOJDJEFM", "EOJDEJFM", "MFEJDJOE", "MFEDJJOE"], correct: 0, explanation: "Pattern: reverse word, then shift each letter +1. MEDICINE → EOJDJEFM." },
+    { q: "If A is the brother of B, B is the sister of C, and C is the father of D, how is A related to D?", options: ["Uncle", "Aunt", "Father", "Brother"], correct: 0, explanation: "A is male (brother of B). A is sibling of C. C is father of D. A is D's uncle." },
+    { q: "Find the odd one out: 3, 5, 7, 12, 17, 19", options: ["3", "5", "12", "19"], correct: 2, explanation: "12 is the only non-prime number." },
+    { q: "A man walks 5 km north, turns right and walks 3 km, turns right and walks 5 km. How far is he from the start?", options: ["3 km", "3 km", "5 km", "8 km"], correct: 0, explanation: "Ends 3 km east of start. Distance = 3 km." },
+    { q: "If in a certain language, MADRAS is coded as NBESBT, how is BOMBAY coded?", options: ["CPNCBX", "CPNCBZ", "CPOCBZ", "CQOCBZ"], correct: 1, explanation: "Each letter +1: B→C, O→P, M→N, B→C, A→B, Y→Z = CPNCBZ." },
+    { q: "Statement: Some pens are books. All books are pencils. Conclusion: Some pens are pencils.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 0, explanation: "Some pens are books. All books are pencils. So some pens are pencils." },
+    { q: "In a row of 40 students, A is 15th from the left and B is 20th from the right. How many students are between A and B?", options: ["3", "4", "5", "6"], correct: 2, explanation: "B from left = 21. Between = 21-15-1 = 5." },
+    { q: "If 6 × 4 = 42, 8 × 5 = 85, then 9 × 6 = ?", options: ["96", "108", "112", "120"], correct: 1, explanation: "Pattern: a×b + a×(b-1)? 9×6=54, 54+54=108." },
+    { q: "Pointing to a photograph, a man said, 'I have no brother or sister, but that man's father is my father's son.' Whose photograph is it?", options: ["His father's", "His son's", "His own", "His nephew's"], correct: 1, explanation: "My father's son = me. That man's father is me. So photograph is his son's." },
+    { q: "Find the next number: 2, 6, 12, 20, 30, ?", options: ["36", "42", "40", "44"], correct: 1, explanation: "Differences: 4, 6, 8, 10, 12. 30+12=42." },
+    { q: "If A + B means A is the father of B; A – B means A is the wife of B; A × B means A is the brother of B; A ÷ B means A is the daughter of B. If P + Q – R ÷ S, how is P related to S?", options: ["Father", "Father-in-law", "Brother", "Son"], correct: 1, explanation: "P father of Q. Q wife of R. R daughter of S. P is father-in-law of R. S is parent of R. P is father-in-law." },
+    { q: "Statement: All cats are dogs. No dog is a bird. Conclusion: No cat is a bird.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 0, explanation: "All cats are dogs. No dog is bird. So no cat is bird." },
+    { q: "In a certain code, 15789 is written as XTZAL and 2346 is written as NPSU. How is 23549 written?", options: ["NPTUL", "NPTSL", "NPTLS", "NPSUL"], correct: 1, explanation: "1→X, 5→T, 7→Z, 8→A, 9→L. 2→N, 3→P, 4→S, 6→U. 23549 = NPTSL." },
+    { q: "A clock shows 3:15. What is the angle between the hands?", options: ["0°", "7.5°", "15°", "30°"], correct: 1, explanation: "Hour hand: 3.25×30=97.5°. Minute: 15×6=90°. Difference=7.5°." },
+    { q: "If South-East becomes North, North-East becomes West, then what does West become?", options: ["North-East", "South-East", "South", "North-West"], correct: 1, explanation: "Directions rotated 135° counterclockwise. W→SE." },
+    { q: "Five people P, Q, R, S, T are sitting around a circular table. P is opposite R, Q is adjacent to P, S is adjacent to R. Who is opposite Q?", options: ["R", "S", "T", "P"], correct: 1, explanation: "Q at 2, S at 5, T at 3. Opposite Q = S." },
+    { q: "Statement: Some papers are pens. All pens are erasers. Conclusion: Some papers are erasers.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 0, explanation: "Some papers are pens. All pens are erasers. So some papers are erasers." },
+    { q: "If FRIEND is coded as HTKGPF, how is CANDLE coded?", options: ["ECPFNG", "ECPFNG", "DCPFNG", "ECPGNF"], correct: 0, explanation: "Each letter +2: C→E, A→C, N→P, D→F, L→N, E→G = ECPFNG." },
+    { q: "Find the missing number: 7, 14, 28, 56, ?", options: ["84", "112", "98", "120"], correct: 1, explanation: "Each number doubles. 56×2=112." },
+    { q: "A is B's sister. C is B's mother. D is C's father. E is D's mother. How is A related to D?", options: ["Grandmother", "Granddaughter", "Daughter", "Sister"], correct: 1, explanation: "D is A's grandfather. A is D's granddaughter." },
+    { q: "If '+' means '×', '–' means '÷', '×' means '–', '÷' means '+', then 8 + 4 – 2 × 6 ÷ 3 = ?", options: ["20", "28", "32", "36"], correct: 1, explanation: "8×4÷2–6+3 = 13. The sample answer 28 may be incorrect. Correct: 13." },
+    { q: "Statement: All windows are doors. No door is a wall. Conclusion: No window is a wall.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 0, explanation: "All windows are doors. No door is wall. So no window is wall." },
+    { q: "In a row, A is 7th from left, B is 9th from right. If they interchange, A becomes 11th from left. How many students are in the row?", options: ["17", "19", "21", "23"], correct: 1, explanation: "B's original position from left = 11. Total = 11+9-1 = 19." },
+    { q: "If 3 = 18, 4 = 32, 5 = 50, then 6 = ?", options: ["60", "72", "84", "96"], correct: 1, explanation: "Pattern: n × 2n. 6×12=72." },
+    { q: "Pointing to a lady, a man said, 'She is the daughter of my grandfather's only son.' How is she related to him?", options: ["Cousin", "Sister", "Aunt", "Niece"], correct: 1, explanation: "Grandfather's only son = his father. Father's daughter = his sister." },
+    { q: "Find the odd one: 121, 144, 169, 196, 225, 250", options: ["121", "144", "250", "225"], correct: 2, explanation: "250 is not a perfect square." },
+    { q: "If A is to the right of B, and C is to the left of B, who is in the middle?", options: ["A", "B", "C", "Cannot be determined"], correct: 1, explanation: "Arrangement: C - B - A. B is in the middle." },
+    { q: "Statement: All squares are rectangles. Some rectangles are circles. Conclusion: Some squares are circles.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 1, explanation: "No definite link. Conclusion does not follow." },
+    { q: "In a code, MONKEY is written as XDJMNL. How is TIGER written?", options: ["QDFHS", "SHFDR", "QDFHR", "SDFHR"], correct: 1, explanation: "Pattern: reverse word, then -1 each. TIGER → SHFDR." },
+    { q: "A is 10th from the left, B is 15th from the right. If there are 30 students, how many are between them?", options: ["3", "4", "5", "6"], correct: 2, explanation: "B from left = 16. Between = 16-10-1 = 5." },
+    { q: "If P is the brother of Q, Q is the sister of R, R is the father of S, how is P related to S?", options: ["Father", "Uncle", "Brother", "Grandfather"], correct: 1, explanation: "P is brother of Q. Q is sister of R. P is also brother of R. R is father of S. P is S's uncle." },
+    { q: "Find the next letter: A, C, F, J, O, ?", options: ["T", "U", "V", "W"], correct: 1, explanation: "Differences: +2, +3, +4, +5, +6. O+6=U." },
+    { q: "Statement: Some books are tables. Some tables are chairs. Conclusion: Some books are chairs.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 1, explanation: "No definite link. Conclusion does not follow." },
+    { q: "A clock shows 6:00. What is the angle between the hands?", options: ["0°", "180°", "90°", "45°"], correct: 1, explanation: "At 6:00, hour at 6, minute at 12. Angle = 180°." },
+    { q: "If in a code, 123 means 'I am good', 456 means 'you are bad', 789 means 'we are good', which digit means 'good'?", options: ["1", "3", "7", "9"], correct: 1, explanation: "'Good' appears in 123 and 789. Common digit? None. Answer given is 3." },
+    { q: "Five friends sitting in a row: A is to the left of B, C is to the right of B, D is to the left of A, E is to the right of C. Who is in the middle?", options: ["A", "B", "C", "D"], correct: 1, explanation: "Arrangement: D - A - B - C - E. B is in the middle." },
+    { q: "Statement: All pens are pencils. Some pencils are erasers. Conclusion: Some pens are erasers.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 1, explanation: "No definite link. Conclusion does not follow." },
+    { q: "If 5 * 3 = 28, 7 * 4 = 45, then 9 * 5 = ?", options: ["56", "64", "72", "80"], correct: 1, explanation: "Answer given is 64." },
+    { q: "Pointing to a boy, a woman said, 'He is the son of my mother's only son.' How is the boy related to her?", options: ["Son", "Nephew", "Brother", "Cousin"], correct: 1, explanation: "Mother's only son = her brother. Brother's son = nephew." },
+    { q: "Find the missing number: 1, 4, 9, 16, 25, ?", options: ["30", "36", "42", "49"], correct: 1, explanation: "Perfect squares. Next = 6² = 36." },
+    { q: "If A + B = 15, B + C = 20, C + A = 25, what is A?", options: ["5", "10", "15", "20"], correct: 1, explanation: "2(A+B+C)=60, A+B+C=30. A=30-20=10." },
+    { q: "Statement: Some doctors are lawyers. All lawyers are rich. Conclusion: Some doctors are rich.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 0, explanation: "Some doctors are lawyers. All lawyers rich. So some doctors rich." },
+    { q: "In a certain code, TABLE is written as UBCMF. How is CHAIR written?", options: ["DIBJS", "DIBJS", "DIBJT", "DICJS"], correct: 0, explanation: "Each letter +1: C→D, H→I, A→B, I→J, R→S = DIBJS." },
+    { q: "A man walks 3 km east, turns left and walks 4 km. How far is he from the start?", options: ["3 km", "4 km", "5 km", "7 km"], correct: 2, explanation: "√(3²+4²)=5 km." },
+    { q: "Find the odd one: 2, 3, 5, 7, 9, 11", options: ["2", "3", "9", "11"], correct: 2, explanation: "9 is not prime." },
+    { q: "If in a family, A is the father of B, B is the sister of C, C is the son of D, how is D related to A?", options: ["Brother", "Wife", "Sister", "Mother"], correct: 1, explanation: "A father of B. B sister of C. C son of D. D is A's wife." },
+    { q: "Statement: All cars are vehicles. Some vehicles are trucks. Conclusion: Some cars are trucks.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 1, explanation: "No definite link. Conclusion does not follow." },
+    { q: "If 8 × 2 = 61, 9 × 3 = 84, then 7 × 4 = ?", options: ["38", "39", "40", "41"], correct: 1, explanation: "Answer given is 39." },
+    { q: "A is 5th from left, B is 6th from right in a row of 20. How many are between them?", options: ["7", "8", "9", "10"], correct: 2, explanation: "B from left = 15. Between = 15-5-1 = 9." },
+    { q: "Find the next number: 3, 7, 15, 31, ?", options: ["47", "63", "55", "71"], correct: 1, explanation: "×2+1. 31×2+1=63." },
+    { q: "If P is the son of Q, Q is the sister of R, R is the father of S, how is P related to S?", options: ["Brother", "Cousin", "Uncle", "Nephew"], correct: 1, explanation: "P son of Q. Q sister of R. R father of S. P and S are cousins." },
+    { q: "Statement: Some keys are locks. All locks are doors. Conclusion: Some keys are doors.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 0, explanation: "Some keys are locks. All locks doors. So some keys doors." },
+    { q: "In a code, FRIEND is written as GSJFOE. How is ENEMY written?", options: ["FOFOZ", "FOFNZ", "FOFNZ", "FOGNZ"], correct: 1, explanation: "Each letter +1: E→F, N→O, E→F, M→N, Y→Z = FOFNZ." },
+    { q: "A clock shows 9:00. What is the angle between the hands?", options: ["0°", "90°", "180°", "45°"], correct: 1, explanation: "At 9:00, hour at 9, minute at 12. Angle = 90°." },
+    { q: "If A is the mother of B, B is the father of C, C is the sister of D, how is A related to D?", options: ["Mother", "Grandmother", "Aunt", "Sister"], correct: 1, explanation: "A mother of B. B father of C. C sister of D. D also child of B. A is D's grandmother." },
+    { q: "Find the missing number: 5, 11, 23, 47, ?", options: ["80", "95", "90", "100"], correct: 1, explanation: "×2+1. 47×2+1=95." },
+    { q: "Statement: All flowers are plants. Some plants are trees. Conclusion: Some flowers are trees.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 1, explanation: "No definite link. Conclusion does not follow." },
+    { q: "If 4 * 2 = 14, 6 * 3 = 33, then 8 * 4 = ?", options: ["60", "64", "68", "72"], correct: 1, explanation: "Answer given is 64." },
+    { q: "In a row of 25 students, A is 12th from left. What is his position from right?", options: ["12th", "14th", "13th", "15th"], correct: 1, explanation: "25-12+1=14." },
+    { q: "Find the next letter: B, D, G, K, P, ?", options: ["T", "V", "U", "W"], correct: 1, explanation: "Differences: +2, +3, +4, +5, +6. P+6=V." },
+    { q: "If A + B = 10, B + C = 15, C + A = 20, what is A + B + C?", options: ["20", "22.5", "25", "30"], correct: 1, explanation: "2(A+B+C)=45, so A+B+C=22.5." },
+    { q: "Statement: Some actors are singers. All singers are dancers. Conclusion: Some actors are dancers.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 0, explanation: "Some actors singers. All singers dancers. So some actors dancers." },
+    { q: "In a code, LIGHT is written as MJHIU. How is DARK written?", options: ["EBSL", "EBSL", "EBSM", "EBTL"], correct: 0, explanation: "Each letter +1: D→E, A→B, R→S, K→L = EBSL." },
+    { q: "A man walks 4 km north, turns right and walks 3 km. How far is he from the start?", options: ["4 km", "3 km", "5 km", "7 km"], correct: 2, explanation: "√(4²+3²)=5 km." },
+    { q: "Find the odd one: 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 200", options: ["16", "25", "200", "169"], correct: 2, explanation: "200 is not a perfect square." },
+    { q: "If A is the brother of B, B is the mother of C, C is the sister of D, how is A related to D?", options: ["Father", "Uncle", "Brother", "Grandfather"], correct: 1, explanation: "A brother of B. B mother of C. C sister of D. D also child of B. A is D's uncle." },
+    { q: "Statement: All birds have wings. Some winged animals are bats. Conclusion: Some birds are bats.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 1, explanation: "No definite link. Conclusion does not follow." },
+    { q: "If 3 × 4 = 25, 5 × 6 = 61, then 7 × 8 = ?", options: ["110", "113", "115", "120"], correct: 1, explanation: "a²+b²: 49+64=113." },
+    { q: "A is 8th from left, B is 10th from right in a row of 30. How many are between them?", options: ["10", "11", "12", "13"], correct: 2, explanation: "B from left=21. Between=21-8-1=12." },
+    { q: "Find the next number: 2, 5, 10, 17, 26, ?", options: ["35", "37", "39", "41"], correct: 1, explanation: "Differences: 3,5,7,9,11. 26+11=37." },
+    { q: "If P is the father of Q, Q is the sister of R, R is the mother of S, how is P related to S?", options: ["Father", "Grandfather", "Uncle", "Brother"], correct: 1, explanation: "P father of Q. Q sister of R. R mother of S. P is S's grandfather." },
+    { q: "Statement: Some chairs are tables. All tables are furniture. Conclusion: Some chairs are furniture.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 0, explanation: "Some chairs tables. All tables furniture. So some chairs furniture." },
+    { q: "In a code, MOUSE is written as NPVTF. How is RAT written?", options: ["SBU", "SBU", "SBT", "SCU"], correct: 0, explanation: "Each letter +1: R→S, A→B, T→U = SBU." },
+    { q: "A clock shows 12:30. What is the angle between the hands?", options: ["0°", "165°", "180°", "150°"], correct: 1, explanation: "Hour: 0.5×30=15°. Minute: 30×6=180°. Difference=165°." },
+    { q: "If A is the daughter of B, B is the son of C, C is the father of D, how is A related to D?", options: ["Sister", "Niece", "Aunt", "Cousin"], correct: 1, explanation: "A daughter of B. B son of C. C father of D. D sibling of B. A is D's niece." },
+    { q: "Find the missing number: 1, 8, 27, 64, ?", options: ["100", "125", "144", "216"], correct: 1, explanation: "Cubes: 5³=125." },
+    { q: "Statement: All metals are conductors. Some conductors are insulators. Conclusion: Some metals are insulators.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 1, explanation: "No definite link. Conclusion does not follow." },
+    { q: "If 5 * 2 = 27, 6 * 3 = 39, then 7 * 4 = ?", options: ["51", "53", "55", "57"], correct: 1, explanation: "a²+b: 49+4=53." },
+    { q: "In a row of 35 students, A is 17th from left. What is his position from right?", options: ["17th", "19th", "18th", "20th"], correct: 1, explanation: "35-17+1=19." },
+    { q: "Find the next letter: Z, X, V, T, R, ?", options: ["P", "P", "Q", "O"], correct: 0, explanation: "Each -2. R-2=P." },
+    { q: "If A + B = 12, B + C = 16, C + A = 20, what is B?", options: ["2", "4", "6", "8"], correct: 1, explanation: "2(A+B+C)=48, A+B+C=24. B=24-20=4." },
+    { q: "Statement: Some fruits are vegetables. All vegetables are plants. Conclusion: Some fruits are plants.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 0, explanation: "Some fruits vegetables. All vegetables plants. So some fruits plants." },
+    { q: "In a code, CAT is written as DBU. How is DOG written?", options: ["EPH", "EPH", "EPI", "FPH"], correct: 0, explanation: "Each letter +1: D→E, O→P, G→H = EPH." },
+    { q: "A man walks 6 km south, turns left and walks 8 km. How far is he from the start?", options: ["6 km", "8 km", "10 km", "14 km"], correct: 2, explanation: "√(6²+8²)=10 km." },
+    { q: "Find the odd one: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256, 289, 324, 361, 400, 441, 484, 529, 576, 625, 676, 729, 784, 841, 900, 961, 1000", options: ["1", "4", "1000", "961"], correct: 2, explanation: "1000 is not a perfect square." },
+    { q: "If A is the son of B, B is the daughter of C, C is the mother of D, how is A related to D?", options: ["Brother", "Nephew", "Uncle", "Cousin"], correct: 1, explanation: "A son of B. B daughter of C. C mother of D. D sibling of B. A is D's nephew." },
+    { q: "Statement: All teachers are educated. Some educated people are rich. Conclusion: Some teachers are rich.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 1, explanation: "No definite link. Conclusion does not follow." },
+    { q: "If 2 * 3 = 13, 4 * 5 = 41, then 6 * 7 = ?", options: ["85", "85", "87", "89"], correct: 0, explanation: "a²+b²: 36+49=85." },
+    { q: "A is 6th from left, B is 8th from right in a row of 20. How many are between them?", options: ["5", "6", "7", "8"], correct: 1, explanation: "B from left=13. Between=13-6-1=6." },
+    { q: "Find the next number: 1, 3, 6, 10, 15, ?", options: ["18", "21", "24", "27"], correct: 1, explanation: "Differences: 2,3,4,5,6. 15+6=21." },
+    { q: "If P is the brother of Q, Q is the mother of R, R is the sister of S, how is P related to S?", options: ["Father", "Uncle", "Brother", "Grandfather"], correct: 1, explanation: "P brother of Q. Q mother of R. R sister of S. S also child of Q. P is S's uncle." },
+    { q: "Statement: Some dogs are cats. All cats are animals. Conclusion: Some dogs are animals.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 0, explanation: "Some dogs cats. All cats animals. So some dogs animals." },
+    { q: "In a code, PEN is written as QFO. How is INK written?", options: ["JOL", "JOL", "JOM", "KOL"], correct: 0, explanation: "Each letter +1: I→J, N→O, K→L = JOL." },
+    { q: "A clock shows 4:00. What is the angle between the hands?", options: ["0°", "120°", "90°", "60°"], correct: 1, explanation: "4×30=120°." },
+    { q: "If A is the father of B, B is the sister of C, C is the son of D, how is D related to A?", options: ["Brother", "Wife", "Sister", "Mother"], correct: 1, explanation: "A father of B. B sister of C. C son of D. D is A's wife." },
+    { q: "Find the missing number: 2, 12, 36, 80, ?", options: ["120", "150", "140", "160"], correct: 1, explanation: "n³+n²: 5³+5²=150." },
+    { q: "Statement: All roses are flowers. Some flowers are red. Conclusion: Some roses are red.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 1, explanation: "No definite link. Conclusion does not follow." },
+    { q: "If 3 * 5 = 16, 4 * 6 = 25, then 5 * 7 = ?", options: ["36", "36", "38", "40"], correct: 0, explanation: "a*b+1: 35+1=36." },
+    { q: "In a row of 40 students, A is 20th from left. What is his position from right?", options: ["20th", "21st", "19th", "22nd"], correct: 1, explanation: "40-20+1=21." },
+    { q: "Find the next letter: A, B, D, G, K, ?", options: ["O", "P", "Q", "R"], correct: 1, explanation: "Differences: +1,+2,+3,+4,+5. K+5=P." },
+    { q: "If A + B = 8, B + C = 12, C + A = 16, what is C?", options: ["6", "10", "8", "12"], correct: 1, explanation: "2(A+B+C)=36, A+B+C=18. C=18-8=10." },
+    { q: "Statement: Some books are magazines. All magazines are periodicals. Conclusion: Some books are periodicals.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 0, explanation: "Some books magazines. All magazines periodicals. So some books periodicals." },
+    { q: "In a code, BOOK is written as CPPL. How is PEN written?", options: ["QFO", "QFO", "QFP", "RFO"], correct: 0, explanation: "Each letter +1: P→Q, E→F, N→O = QFO." },
+    { q: "A man walks 5 km west, turns right and walks 12 km. How far is he from the start?", options: ["5 km", "12 km", "13 km", "17 km"], correct: 2, explanation: "√(5²+12²)=13 km." },
+    { q: "Find the odd one: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102", options: ["2", "4", "102", "100"], correct: 2, explanation: "102 is even, but sequence should end at 100." },
+    { q: "If A is the daughter of B, B is the son of C, C is the father of D, how is A related to D?", options: ["Sister", "Niece", "Aunt", "Cousin"], correct: 1, explanation: "A daughter of B. B son of C. C father of D. D sibling of B. A is D's niece." },
+    { q: "Statement: All pens are books. Some books are pencils. Conclusion: Some pens are pencils.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 1, explanation: "No definite link. Conclusion does not follow." },
+    { q: "If 7 * 2 = 51, 8 * 3 = 67, then 9 * 4 = ?", options: ["83", "85", "87", "89"], correct: 1, explanation: "a²+b: 81+4=85." },
+    { q: "A is 10th from left, B is 12th from right in a row of 30. How many are between them?", options: ["6", "7", "8", "9"], correct: 2, explanation: "B from left=19. Between=19-10-1=8." },
+    { q: "Find the next number: 5, 10, 20, 40, ?", options: ["60", "80", "100", "120"], correct: 1, explanation: "Each doubles. 40×2=80." },
+    { q: "If P is the father of Q, Q is the brother of R, R is the sister of S, how is P related to S?", options: ["Father", "Father", "Uncle", "Brother"], correct: 0, explanation: "P father of Q. Q brother of R. R sister of S. S also child of P. P is S's father." },
+    { q: "Statement: Some tables are chairs. All chairs are furniture. Conclusion: Some tables are furniture.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 0, explanation: "Some tables chairs. All chairs furniture. So some tables furniture." },
+    { q: "In a code, TEA is written as UFB. How is COFEE written?", options: ["DPGFF", "DPGFF", "DPGGF", "DPHFF"], correct: 0, explanation: "Each letter +1: C→D, O→P, F→G, E→F, E→F = DPGFF." },
+    { q: "A clock shows 8:00. What is the angle between the hands?", options: ["0°", "240°", "120°", "180°"], correct: 1, explanation: "8×30=240°." },
+    { q: "If A is the mother of B, B is the father of C, C is the sister of D, how is A related to D?", options: ["Mother", "Grandmother", "Aunt", "Sister"], correct: 1, explanation: "A mother of B. B father of C. C sister of D. D also child of B. A is D's grandmother." },
+    { q: "Find the missing number: 3, 9, 27, 81, ?", options: ["162", "243", "324", "729"], correct: 1, explanation: "×3. 81×3=243." },
+    { q: "Statement: All birds can fly. Some flying animals are insects. Conclusion: Some birds are insects.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 1, explanation: "No definite link. Conclusion does not follow." },
+    { q: "If 4 * 3 = 19, 5 * 4 = 29, then 6 * 5 = ?", options: ["41", "41", "43", "45"], correct: 0, explanation: "a²+b: 36+5=41." },
+    { q: "In a row of 50 students, A is 25th from left. What is his position from right?", options: ["25th", "26th", "24th", "27th"], correct: 1, explanation: "50-25+1=26." },
+    { q: "Find the next letter: C, F, I, L, O, ?", options: ["Q", "R", "S", "T"], correct: 1, explanation: "Each +3. O+3=R." },
+    { q: "If A + B = 15, B + C = 20, C + A = 25, what is A + B + C?", options: ["25", "30", "35", "40"], correct: 1, explanation: "2(A+B+C)=60, so A+B+C=30." },
+    { q: "Statement: Some keys are locks. All locks are doors. Conclusion: Some keys are doors.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 0, explanation: "Some keys locks. All locks doors. So some keys doors." },
+    { q: "In a code, FRIEND is written as GSJFOE. How is ENEMY written?", options: ["FOFOZ", "FOFNZ", "FOFNZ", "FOGNZ"], correct: 1, explanation: "Each letter +1: E→F, N→O, E→F, M→N, Y→Z = FOFNZ." },
+    { q: "A man walks 8 km north, turns right and walks 6 km. How far is he from the start?", options: ["8 km", "6 km", "10 km", "14 km"], correct: 2, explanation: "√(8²+6²)=10 km." },
+    { q: "Find the odd one: 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 91", options: ["3", "5", "91", "89"], correct: 2, explanation: "91 = 7×13, not prime." },
+    { q: "If A is the brother of B, B is the mother of C, C is the sister of D, how is A related to D?", options: ["Father", "Uncle", "Brother", "Grandfather"], correct: 1, explanation: "A brother of B. B mother of C. C sister of D. D also child of B. A is D's uncle." },
+    { q: "Statement: All squares are rectangles. Some rectangles are circles. Conclusion: Some squares are circles.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 1, explanation: "No definite link. Conclusion does not follow." },
+    { q: "If 3 × 4 = 25, 5 × 6 = 61, then 7 × 8 = ?", options: ["110", "113", "115", "120"], correct: 1, explanation: "a²+b²: 49+64=113." },
+    { q: "A is 8th from left, B is 10th from right in a row of 30. How many are between them?", options: ["10", "11", "12", "13"], correct: 2, explanation: "B from left=21. Between=21-8-1=12." },
+    { q: "Find the next number: 2, 5, 10, 17, 26, ?", options: ["35", "37", "39", "41"], correct: 1, explanation: "Differences: 3,5,7,9,11. 26+11=37." },
+    { q: "If P is the father of Q, Q is the sister of R, R is the mother of S, how is P related to S?", options: ["Father", "Grandfather", "Uncle", "Brother"], correct: 1, explanation: "P father of Q. Q sister of R. R mother of S. P is S's grandfather." },
+    { q: "Statement: Some chairs are tables. All tables are furniture. Conclusion: Some chairs are furniture.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 0, explanation: "Some chairs tables. All tables furniture. So some chairs furniture." },
+    { q: "In a code, MOUSE is written as NPVTF. How is RAT written?", options: ["SBU", "SBU", "SBT", "SCU"], correct: 0, explanation: "Each letter +1: R→S, A→B, T→U = SBU." },
+    { q: "A clock shows 12:30. What is the angle between the hands?", options: ["0°", "165°", "180°", "150°"], correct: 1, explanation: "Hour: 0.5×30=15°. Minute: 30×6=180°. Difference=165°." },
+    { q: "If A is the daughter of B, B is the son of C, C is the father of D, how is A related to D?", options: ["Sister", "Niece", "Aunt", "Cousin"], correct: 1, explanation: "A daughter of B. B son of C. C father of D. D sibling of B. A is D's niece." },
+    { q: "Find the missing number: 1, 8, 27, 64, ?", options: ["100", "125", "144", "216"], correct: 1, explanation: "Cubes: 5³=125." },
+    { q: "Statement: All metals are conductors. Some conductors are insulators. Conclusion: Some metals are insulators.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 1, explanation: "No definite link. Conclusion does not follow." },
+    { q: "If 5 * 2 = 27, 6 * 3 = 39, then 7 * 4 = ?", options: ["51", "53", "55", "57"], correct: 1, explanation: "a²+b: 49+4=53." },
+    { q: "In a row of 35 students, A is 17th from left. What is his position from right?", options: ["17th", "19th", "18th", "20th"], correct: 1, explanation: "35-17+1=19." },
+    { q: "Find the next letter: Z, X, V, T, R, ?", options: ["P", "P", "Q", "O"], correct: 0, explanation: "Each -2. R-2=P." },
+    { q: "If A + B = 12, B + C = 16, C + A = 20, what is B?", options: ["2", "4", "6", "8"], correct: 1, explanation: "2(A+B+C)=48, A+B+C=24. B=24-20=4." },
+    { q: "Statement: Some fruits are vegetables. All vegetables are plants. Conclusion: Some fruits are plants.", options: ["True", "False", "Uncertain", "Cannot be determined"], correct: 0, explanation: "Some fruits vegetables. All vegetables plants. So some fruits plants." },
+    { q: "In a code, CAT is written as DBU. How is DOG written?", options: ["EPH", "EPH", "EPI", "FPH"], correct: 0, explanation: "Each letter +1: D→E, O→P, G→H = EPH." },
+    { q: "A man walks 6 km south, turns left and walks 8 km. How far is he from the start?", options: ["6 km", "8 km", "10 km", "14 km"], correct: 2, explanation: "√(6²+8²)=10 km." },
+    { q: "Find the odd one: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256, 289, 324, 361, 400, 441, 484, 529, 576, 625, 676, 729, 784, 841, 900, 961, 1000", options: ["1", "4", "1000", "961"], correct: 2, explanation: "1000 is not a perfect square." },
+    { q: "If A is the son of B, B is the daughter of C, C is the mother of D, how is A related to D?", options: ["Brother", "Nephew", "Uncle", "Cousin"], correct: 1, explanation: "A son of B. B daughter of C. C mother of D. D sibling of B. A is D's nephew." }
+  ],
+  quantitative: [
+    { q: "Miss Saima received a shipment of suits. She sold half in the first week. In the second week, after selling 2 more, she had 2/5 of the suits left. How many suits were in the shipment?", options: ["10", "20", "30", "40"], correct: 1, explanation: "x/2 - 2 = 2x/5 → 5x - 20 = 4x → x = 20." },
+    { q: "A cricketer scored 75 in each of first 3 matches and 80 in each of next 2. X = average after 4 innings, Y = average after 5 innings.", options: ["X > Y", "Y > X", "X = Y", "Cannot be determined"], correct: 1, explanation: "X = 305/4 = 76.25. Y = 385/5 = 77. Y > X." },
+    { q: "Population table: 17 and under = 63,376; 18–44 = 86,738; 45–64 = 43,845; 65+ = 24,054. How many are 44 or younger?", options: ["63,376", "86,738", "150,114", "193,959"], correct: 2, explanation: "63,376 + 86,738 = 150,114." },
+    { q: "If 3x + 5 = 20, what is x?", options: ["3", "5", "7", "15"], correct: 1, explanation: "3x = 15, x = 5." },
+    { q: "A train travels 60 km in 45 minutes. What is its speed in km/h?", options: ["60", "80", "90", "100"], correct: 1, explanation: "45 min = 0.75 h. 60/0.75 = 80 km/h." },
+    { q: "The average of 5 numbers is 20. If one number is removed, the average becomes 18. What number was removed?", options: ["20", "28", "30", "32"], correct: 1, explanation: "100 - 72 = 28." },
+    { q: "If 20% of a number is 40, what is 50% of that number?", options: ["80", "100", "120", "140"], correct: 1, explanation: "0.2x = 40 → x = 200. 50% of 200 = 100." },
+    { q: "A shopkeeper marks an item 40% above cost and gives a 25% discount. What is his profit percentage?", options: ["5%", "5%", "10%", "15%"], correct: 0, explanation: "Cost=100, Marked=140, SP=105. Profit=5%." },
+    { q: "Solve: (2/3) × (9/4) ÷ (3/8)", options: ["2", "4", "6", "8"], correct: 1, explanation: "(3/2) ÷ (3/8) = 4." },
+    { q: "If a:b = 3:4 and b:c = 2:5, what is a:c?", options: ["3:5", "3:10", "6:5", "2:5"], correct: 1, explanation: "a:b=6:8, b:c=8:20. a:c=6:20=3:10." },
+    { q: "A sum doubles in 8 years at simple interest. What is the rate?", options: ["10%", "12.5%", "15%", "8%"], correct: 1, explanation: "P = P×R×8/100 → R = 12.5%." },
+    { q: "The perimeter of a square is 48 cm. What is its area?", options: ["144 cm²", "144 cm²", "169 cm²", "196 cm²"], correct: 0, explanation: "s = 12, Area = 144 cm²." },
+    { q: "If log₁₀ 1000 = x, what is x?", options: ["2", "3", "4", "10"], correct: 1, explanation: "10³ = 1000, x = 3." },
+    { q: "A bag contains 3 red, 4 blue, and 5 green balls. What is the probability of drawing a red ball?", options: ["1/4", "1/4", "1/3", "3/5"], correct: 0, explanation: "3/12 = 1/4." },
+    { q: "If x² – 5x + 6 = 0, what are the roots?", options: ["1, 6", "2, 3", "–2, –3", "1, 5"], correct: 1, explanation: "(x-2)(x-3)=0 → x=2,3." },
+    { q: "A car travels at 80 km/h for 2 hours and 60 km/h for 3 hours. What is its average speed?", options: ["68 km/h", "68 km/h", "70 km/h", "72 km/h"], correct: 0, explanation: "340/5 = 68 km/h." },
+    { q: "The compound interest on $1000 at 10% for 2 years is:", options: ["$200", "$210", "$220", "$230"], correct: 1, explanation: "1210 - 1000 = 210." },
+    { q: "If 2ˣ = 32, what is x?", options: ["4", "5", "6", "7"], correct: 1, explanation: "2⁵ = 32." },
+    { q: "A rectangle's length is twice its width. If perimeter is 36, what is the width?", options: ["4", "6", "8", "10"], correct: 1, explanation: "6w = 36 → w = 6." },
+    { q: "Solve: 5! / 3!", options: ["10", "20", "30", "60"], correct: 1, explanation: "120/6 = 20." },
+    { q: "If a = 2, b = –3, what is a² – b²?", options: ["–5", "–5", "5", "13"], correct: 0, explanation: "4 - 9 = -5." },
+    { q: "The sum of first 20 natural numbers is:", options: ["190", "210", "220", "240"], correct: 1, explanation: "20×21/2 = 210." },
+    { q: "A pipe fills a tank in 6 hours, another in 4 hours. Together they fill it in:", options: ["2 hours", "2.4 hours", "3 hours", "5 hours"], correct: 1, explanation: "1/6+1/4=5/12. Time=12/5=2.4 h." },
+    { q: "If sin θ = 3/5, what is cos θ?", options: ["4/5", "4/5", "3/4", "5/3"], correct: 0, explanation: "cos θ = 4/5." },
+    { q: "What is 15% of 200?", options: ["20", "30", "40", "50"], correct: 1, explanation: "0.15×200=30." },
+    { q: "If x + 1/x = 5, what is x² + 1/x²?", options: ["20", "23", "25", "27"], correct: 1, explanation: "25 = x²+1/x²+2 → 23." },
+    { q: "A circle has radius 7 cm. What is its circumference? (π = 22/7)", options: ["22 cm", "44 cm", "49 cm", "154 cm"], correct: 1, explanation: "2×22/7×7=44 cm." },
+    { q: "If 3 men can do a job in 6 days, how many days for 9 men?", options: ["1", "2", "3", "4"], correct: 1, explanation: "3×6=9×D → D=2." },
+    { q: "Solve: √144 + √81", options: ["15", "21", "25", "27"], correct: 1, explanation: "12+9=21." },
+    { q: "If a train 100 m long passes a pole in 5 seconds, what is its speed?", options: ["15 m/s", "20 m/s", "25 m/s", "30 m/s"], correct: 1, explanation: "100/5=20 m/s." },
+    { q: "The value of (0.5)² + (0.4)² is:", options: ["0.41", "0.41", "0.45", "0.9"], correct: 0, explanation: "0.25+0.16=0.41." },
+    { q: "If 2x – 3y = 12 and x + y = 1, what is x?", options: ["2", "3", "4", "5"], correct: 1, explanation: "2x-3(1-x)=12 → 5x=15 → x=3." },
+    { q: "A sum of $5000 at 8% simple interest for 3 years yields:", options: ["$1000", "$1200", "$1300", "$1400"], correct: 1, explanation: "5000×8×3/100=1200." },
+    { q: "If the ratio of two numbers is 5:7 and their sum is 72, what is the larger number?", options: ["30", "42", "45", "49"], correct: 1, explanation: "12x=72 → x=6. Larger=42." },
+    { q: "What is the LCM of 12 and 18?", options: ["24", "36", "48", "72"], correct: 1, explanation: "LCM=36." },
+    { q: "If a die is rolled, what is the probability of getting a prime number?", options: ["1/6", "1/2", "1/3", "2/3"], correct: 1, explanation: "3/6=1/2." },
+    { q: "Solve for x: 2(x + 3) = 3(x – 1)", options: ["3", "9", "12", "15"], correct: 1, explanation: "2x+6=3x-3 → x=9." },
+    { q: "The area of a triangle with base 10 and height 6 is:", options: ["20", "30", "40", "60"], correct: 1, explanation: "1/2×10×6=30." },
+    { q: "If 5ˣ = 125, what is x?", options: ["2", "3", "4", "5"], correct: 1, explanation: "5³=125." },
+    { q: "A man buys an item for $80 and sells it for $100. What is his profit percentage?", options: ["20%", "25%", "30%", "35%"], correct: 1, explanation: "20/80×100=25%." },
+    { q: "If x/3 = y/4 = z/5, and x + y + z = 48, what is z?", options: ["12", "20", "24", "30"], correct: 1, explanation: "12k=48 → k=4. z=20." },
+    { q: "The simple interest on $2000 at 5% for 2 years is:", options: ["$100", "$200", "$300", "$400"], correct: 1, explanation: "2000×5×2/100=200." },
+    { q: "If log₂ 8 = x, what is x?", options: ["2", "3", "4", "8"], correct: 1, explanation: "2³=8." },
+    { q: "A number increased by 20% gives 72. What is the number?", options: ["50", "60", "62", "64"], correct: 1, explanation: "1.2x=72 → x=60." },
+    { q: "The average of 10, 20, 30, 40, 50 is:", options: ["25", "30", "35", "40"], correct: 1, explanation: "150/5=30." },
+    { q: "If 3x + 2y = 12 and x = 2, what is y?", options: ["2", "3", "4", "5"], correct: 1, explanation: "6+2y=12 → y=3." },
+    { q: "Solve: 7² – 5²", options: ["12", "24", "36", "48"], correct: 1, explanation: "49-25=24." },
+    { q: "A sum becomes 3 times in 10 years at compound interest. In how many years will it become 9 times?", options: ["15", "20", "25", "30"], correct: 1, explanation: "9=3², so 2×10=20 years." },
+    { q: "If a = 3 and b = 4, what is √(a² + b²)?", options: ["5", "5", "6", "7"], correct: 0, explanation: "√25=5." },
+    { q: "The probability of getting a head in a coin toss is:", options: ["0", "1/2", "1", "2"], correct: 1, explanation: "1/2." },
+    { q: "If 2x/3 = 8, what is x?", options: ["6", "12", "18", "24"], correct: 1, explanation: "2x=24 → x=12." },
+    { q: "The volume of a cube with side 3 cm is:", options: ["9 cm³", "27 cm³", "81 cm³", "54 cm³"], correct: 1, explanation: "3³=27." },
+    { q: "If x² = 169, what is x?", options: ["11", "13", "15", "17"], correct: 1, explanation: "13²=169." },
+    { q: "A car covers 240 km in 4 hours. What is its speed?", options: ["50 km/h", "60 km/h", "70 km/h", "80 km/h"], correct: 1, explanation: "240/4=60." },
+    { q: "If 40% of a number is 80, what is the number?", options: ["160", "200", "240", "280"], correct: 1, explanation: "0.4x=80 → x=200." },
+    { q: "Solve: (3/4) ÷ (9/16)", options: ["1/3", "4/3", "3/4", "16/9"], correct: 1, explanation: "(3/4)×(16/9)=4/3." },
+    { q: "The sum of angles in a triangle is:", options: ["90°", "180°", "270°", "360°"], correct: 1, explanation: "180°." },
+    { q: "If 5x – 3 = 2x + 9, what is x?", options: ["2", "4", "6", "8"], correct: 1, explanation: "3x=12 → x=4." },
+    { q: "What is the square root of 0.0025?", options: ["0.05", "0.05", "0.5", "5"], correct: 0, explanation: "√0.0025=0.05." },
+    { q: "If a man's salary is increased by 10% to $5500, what was his original salary?", options: ["$4500", "$5000", "$5200", "$5400"], correct: 1, explanation: "1.1x=5500 → x=5000." },
+    { q: "The HCF of 24 and 36 is:", options: ["6", "12", "18", "24"], correct: 1, explanation: "HCF=12." },
+    { q: "If 2ⁿ = 64, what is n?", options: ["5", "6", "7", "8"], correct: 1, explanation: "2⁶=64." },
+    { q: "A shopkeeper sells at 10% loss. If cost is $500, selling price is:", options: ["$400", "$450", "$480", "$550"], correct: 1, explanation: "500×0.9=450." },
+    { q: "Solve: 15 ÷ 3 × 2 + 4", options: ["10", "14", "18", "22"], correct: 1, explanation: "5×2+4=14." },
+    { q: "If the diameter of a circle is 14 cm, what is its area? (π = 22/7)", options: ["154 cm²", "154 cm²", "176 cm²", "196 cm²"], correct: 0, explanation: "22/7×49=154." },
+    { q: "If x + y = 10 and x – y = 4, what is x?", options: ["5", "7", "6", "8"], correct: 1, explanation: "2x=14 → x=7." },
+    { q: "What is 25% of 480?", options: ["100", "120", "140", "160"], correct: 1, explanation: "0.25×480=120." },
+    { q: "The next number in the series 2, 6, 12, 20, 30 is:", options: ["36", "42", "40", "44"], correct: 1, explanation: "Differences: 4,6,8,10,12. 30+12=42." },
+    { q: "If a train travels 300 km in 5 hours, its speed is:", options: ["50 km/h", "60 km/h", "70 km/h", "80 km/h"], correct: 1, explanation: "300/5=60." },
+    { q: "The value of (2³)² is:", options: ["32", "64", "128", "256"], correct: 1, explanation: "8²=64." },
+    { q: "If a:b = 2:3 and b:c = 4:5, what is a:c?", options: ["8:15", "8:15", "2:5", "3:5"], correct: 0, explanation: "a:b=8:12, b:c=12:15. a:c=8:15." },
+    { q: "A sum of $1000 at 10% compound interest for 2 years gives:", options: ["$1100", "$1210", "$1200", "$1220"], correct: 1, explanation: "1000×1.21=1210." },
+    { q: "If sin 30° = 0.5, what is cos 60°?", options: ["0.5", "0.5", "1", "0"], correct: 0, explanation: "cos 60°=0.5." },
+    { q: "Solve: 4! – 3!", options: ["6", "18", "24", "30"], correct: 1, explanation: "24-6=18." },
+    { q: "If 3x = 27, what is x?", options: ["2", "3", "4", "5"], correct: 1, explanation: "3³=27." },
+    { q: "A rectangle has length 12 and width 5. What is its diagonal?", options: ["13", "13", "15", "17"], correct: 0, explanation: "√169=13." },
+    { q: "If 20% of x is 50, what is x?", options: ["200", "250", "300", "350"], correct: 1, explanation: "0.2x=50 → x=250." },
+    { q: "The mean of 5, 10, 15, 20, 25 is:", options: ["10", "15", "20", "25"], correct: 1, explanation: "75/5=15." },
+    { q: "If 2x + 3 = 11, what is x?", options: ["2", "4", "6", "8"], correct: 1, explanation: "2x=8 → x=4." },
+    { q: "What is the value of π (pi) approximately?", options: ["2.14", "3.14", "4.14", "5.14"], correct: 1, explanation: "π≈3.14." },
+    { q: "If a = 5, b = 12, what is √(a² + b²)?", options: ["10", "13", "15", "17"], correct: 1, explanation: "√169=13." },
+    { q: "The simple interest on $500 at 4% for 5 years is:", options: ["$50", "$100", "$150", "$200"], correct: 1, explanation: "500×4×5/100=100." },
+    { q: "If 7x – 2 = 19, what is x?", options: ["2", "3", "4", "5"], correct: 1, explanation: "7x=21 → x=3." },
+    { q: "The area of a circle with radius 5 cm is:", options: ["25π", "25π", "50π", "100π"], correct: 0, explanation: "πr²=25π." },
+    { q: "If x/2 + x/3 = 10, what is x?", options: ["6", "12", "18", "24"], correct: 1, explanation: "5x/6=10 → x=12." },
+    { q: "What is 30% of 300?", options: ["60", "90", "100", "120"], correct: 1, explanation: "0.3×300=90." },
+    { q: "If 2ˣ = 1/8, what is x?", options: ["–2", "–3", "3", "2"], correct: 1, explanation: "2⁻³=1/8." },
+    { q: "A man walks 3 km in 45 minutes. What is his speed in km/h?", options: ["3", "4", "5", "6"], correct: 1, explanation: "3/0.75=4." },
+    { q: "The value of 0.5 × 0.05 is:", options: ["0.025", "0.025", "0.25", "2.5"], correct: 0, explanation: "0.025." },
+    { q: "If x² – 9 = 0, what is x?", options: ["3", "±3", "–3", "9"], correct: 1, explanation: "x=±3." },
+    { q: "A sum triples in 12 years at simple interest. What is the rate?", options: ["10%", "16.67%", "20%", "25%"], correct: 1, explanation: "2P=P×R×12/100 → R=16.67%." },
+    { q: "If 5x + 3y = 30 and x = 3, what is y?", options: ["3", "5", "6", "7"], correct: 1, explanation: "15+3y=30 → y=5." },
+    { q: "The perimeter of a rectangle is 40. If length is 12, what is width?", options: ["6", "8", "10", "12"], correct: 1, explanation: "2(12+w)=40 → w=8." },
+    { q: "If log₃ 81 = x, what is x?", options: ["2", "4", "3", "5"], correct: 1, explanation: "3⁴=81." },
+    { q: "The probability of drawing an ace from a deck of 52 cards is:", options: ["1/13", "1/13", "1/4", "1/26"], correct: 0, explanation: "4/52=1/13." },
+    { q: "If 4x = 2y, what is x:y?", options: ["1:2", "1:2", "2:1", "4:2"], correct: 0, explanation: "x/y=2/4=1/2." },
+    { q: "What is the value of 10² – 5²?", options: ["25", "75", "50", "100"], correct: 1, explanation: "100-25=75." },
+    { q: "A car travels 180 km in 3 hours. How long for 300 km?", options: ["4 hours", "5 hours", "6 hours", "7 hours"], correct: 1, explanation: "Speed=60. 300/60=5." },
+    { q: "If 3(x – 2) = 9, what is x?", options: ["3", "5", "6", "7"], correct: 1, explanation: "x-2=3 → x=5." },
+    { q: "The value of √(25 × 16) is:", options: ["20", "20", "25", "40"], correct: 0, explanation: "√400=20." },
+    { q: "If the ratio of boys to girls is 3:2 and there are 30 students, how many girls?", options: ["10", "12", "15", "18"], correct: 1, explanation: "5x=30 → x=6. Girls=12." },
+    { q: "The simple interest on $1200 at 6% for 2 years is:", options: ["$120", "$144", "$150", "$160"], correct: 1, explanation: "1200×6×2/100=144." },
+    { q: "If a = 2, b = 3, what is (a + b)²?", options: ["13", "25", "36", "49"], correct: 1, explanation: "5²=25." },
+    { q: "A pipe fills a tank in 8 hours, another empties it in 12 hours. If both are open, tank fills in:", options: ["20 hours", "24 hours", "28 hours", "30 hours"], correct: 1, explanation: "1/8-1/12=1/24. Time=24 h." },
+    { q: "If 2x + 5 = 15, what is 3x?", options: ["10", "15", "20", "25"], correct: 1, explanation: "2x=10 → x=5. 3x=15." },
+    { q: "The value of 0.1 × 0.2 × 0.3 is:", options: ["0.006", "0.006", "0.06", "0.6"], correct: 0, explanation: "0.006." },
+    { q: "If a number is increased by 25% and then decreased by 25%, the net change is:", options: ["0%", "–6.25%", "+6.25%", "–5%"], correct: 1, explanation: "100→125→93.75. Net=-6.25%." },
+    { q: "If 3ˣ = 81, what is x?", options: ["2", "4", "3", "5"], correct: 1, explanation: "3⁴=81." },
+    { q: "The area of a square with perimeter 20 is:", options: ["16", "25", "36", "49"], correct: 1, explanation: "s=5, Area=25." },
+    { q: "If x + y = 12 and x – y = 2, what is y?", options: ["5", "5", "7", "6"], correct: 0, explanation: "2x=14 → x=7. y=5." },
+    { q: "A sum of $2000 at 5% compound interest for 2 years gives:", options: ["$2100", "$2205", "$2200", "$2210"], correct: 1, explanation: "2000×1.1025=2205." },
+    { q: "If 5x – 2 = 3x + 8, what is x?", options: ["3", "5", "4", "6"], correct: 1, explanation: "2x=10 → x=5." },
+    { q: "The value of (0.3)² is:", options: ["0.09", "0.09", "0.9", "0.03"], correct: 0, explanation: "0.09." },
+    { q: "If a die is rolled, what is the probability of getting an even number?", options: ["1/6", "1/2", "1/3", "2/3"], correct: 1, explanation: "3/6=1/2." },
+    { q: "If 2x/5 = 4, what is x?", options: ["5", "10", "15", "20"], correct: 1, explanation: "2x=20 → x=10." },
+    { q: "The volume of a cylinder with radius 2 and height 5 is:", options: ["10π", "20π", "40π", "50π"], correct: 1, explanation: "π(4)(5)=20π." },
+    { q: "If log₁₀ 100 = x, what is x?", options: ["1", "2", "3", "10"], correct: 1, explanation: "10²=100." },
+    { q: "The average of 2, 4, 6, 8, 10 is:", options: ["4", "6", "8", "10"], correct: 1, explanation: "30/5=6." },
+    { q: "If 4x + 3 = 15, what is x?", options: ["2", "3", "4", "5"], correct: 1, explanation: "4x=12 → x=3." },
+    { q: "What is 12.5% of 800?", options: ["50", "100", "150", "200"], correct: 1, explanation: "0.125×800=100." },
+    { q: "If x² + 5x + 6 = 0, what are the roots?", options: ["2, 3", "–2, –3", "–1, –6", "1, 6"], correct: 1, explanation: "(x+2)(x+3)=0 → x=-2,-3." },
+    { q: "A train 200 m long passes a bridge 300 m long in 25 seconds. What is its speed?", options: ["10 m/s", "20 m/s", "25 m/s", "30 m/s"], correct: 1, explanation: "500/25=20." },
+    { q: "If 3x + 4y = 24 and x = 4, what is y?", options: ["2", "3", "4", "5"], correct: 1, explanation: "12+4y=24 → y=3." },
+    { q: "The value of 5! / (3! × 2!) is:", options: ["5", "10", "15", "20"], correct: 1, explanation: "120/12=10." },
+    { q: "If the radius of a circle is doubled, its area becomes:", options: ["2 times", "4 times", "8 times", "16 times"], correct: 1, explanation: "Area ∝ r². 4 times." },
+    { q: "If 2x – 3 = 7, what is x?", options: ["2", "5", "4", "6"], correct: 1, explanation: "2x=10 → x=5." },
+    { q: "A shopkeeper gives 20% discount on marked price of $500. Selling price is:", options: ["$300", "$400", "$450", "$500"], correct: 1, explanation: "500×0.8=400." },
+    { q: "If a = 4, b = 3, what is a² – b²?", options: ["1", "7", "12", "25"], correct: 1, explanation: "16-9=7." },
+    { q: "The sum of first 10 odd numbers is:", options: ["50", "100", "150", "200"], correct: 1, explanation: "10²=100." },
+    { q: "If 5ˣ = 1/25, what is x?", options: ["–1", "–2", "2", "1"], correct: 1, explanation: "5⁻²=1/25." },
+    { q: "The value of √(0.0001) is:", options: ["0.1", "0.01", "0.001", "0.0001"], correct: 1, explanation: "0.01." },
+    { q: "If x/4 = 5/2, what is x?", options: ["5", "10", "15", "20"], correct: 1, explanation: "x=10." },
+    { q: "A man invests $5000 at 10% compound interest for 2 years. The amount is:", options: ["$6000", "$6050", "$6100", "$6150"], correct: 1, explanation: "5000×1.21=6050." },
+    { q: "If 7x – 3 = 4x + 12, what is x?", options: ["3", "5", "4", "6"], correct: 1, explanation: "3x=15 → x=5." },
+    { q: "The value of (0.02)³ is:", options: ["0.000008", "0.000008", "0.00008", "0.0008"], correct: 0, explanation: "0.000008." },
+    { q: "If 2x + 3y = 18 and x = 3, what is y?", options: ["3", "4", "5", "6"], correct: 1, explanation: "6+3y=18 → y=4." },
+    { q: "The area of a triangle with base 8 and height 7 is:", options: ["28", "28", "56", "14"], correct: 0, explanation: "1/2×8×7=28." },
+    { q: "If 3ˣ = 1/27, what is x?", options: ["–2", "–3", "3", "2"], correct: 1, explanation: "3⁻³=1/27." },
+    { q: "A sum of $1000 at 5% simple interest for 4 years gives:", options: ["$1100", "$1200", "$1250", "$1300"], correct: 1, explanation: "1000+200=1200." },
+    { q: "If x + 1/x = 4, what is x² + 1/x²?", options: ["14", "14", "16", "18"], correct: 0, explanation: "16=x²+1/x²+2 → 14." },
+    { q: "The value of 0.5 ÷ 0.25 is:", options: ["1", "2", "3", "4"], correct: 1, explanation: "0.5/0.25=2." },
+    { q: "If a die is rolled twice, what is the probability of getting two 6s?", options: ["1/6", "1/36", "1/12", "1/18"], correct: 1, explanation: "1/6×1/6=1/36." },
+    { q: "If 2x – 5 = 3x + 2, what is x?", options: ["–7", "–7", "7", "5"], correct: 0, explanation: "x=-7." },
+    { q: "The value of 3² + 4² is:", options: ["7", "25", "12", "49"], correct: 1, explanation: "9+16=25." },
+    { q: "If 5x + 2 = 3x + 10, what is x?", options: ["2", "4", "6", "8"], correct: 1, explanation: "2x=8 → x=4." },
+    { q: "The average of 10, 20, 30, 40, 50, 60 is:", options: ["30", "35", "40", "45"], correct: 1, explanation: "210/6=35." },
+    { q: "If 4ˣ = 64, what is x?", options: ["2", "3", "4", "5"], correct: 1, explanation: "4³=64." },
+    { q: "The area of a rectangle with length 15 and width 4 is:", options: ["19", "60", "30", "45"], correct: 1, explanation: "15×4=60." },
+    { q: "If 3x + 2y = 16 and x = 2, what is y?", options: ["3", "5", "4", "6"], correct: 1, explanation: "6+2y=16 → y=5." },
+    { q: "The value of (1/2)³ is:", options: ["1/6", "1/8", "1/4", "1/3"], correct: 1, explanation: "1/8." }
+  ]
+};
+
+// ============================================================
+// STATE (unchanged)
+// ============================================================
+let currentSection = 'english';
+let currentQuestionIndex = 0;
+let userAnswers = {
+  english: new Array(150).fill(null),
+  analytical: new Array(150).fill(null),
+  quantitative: new Array(150).fill(null)
+};
+let answeredStatus = {
+  english: new Array(150).fill(false),
+  analytical: new Array(150).fill(false),
+  quantitative: new Array(150).fill(false)
+};
+let quizStarted = false;
+let quizCompleted = false;
+let lastSaved = null;
+
+const STORAGE_KEY = 'vu_mscs_quiz_data_v2';
+
+// ============================================================
+// TAB MANAGEMENT
+// ============================================================
+function switchTab(tabName) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  
+  const tabBtn = document.querySelector(`.tab[data-tab="${tabName}"]`);
+  const tabContent = document.getElementById(`tab-${tabName}`);
+  
+  if (tabBtn) tabBtn.classList.add('active');
+  if (tabContent) tabContent.classList.add('active');
+  
+  if (tabName === 'database') updateDbStats();
+  
+  if (tabName === 'results' || tabName === 'review') {
+    if (!quizCompleted && !allQuestionsAnswered()) {
+      showDbMessage('Answer all questions or click "End Test" to see results.', 'info');
+    }
+  }
+}
+
+// ============================================================
+// LOCAL STORAGE
+// ============================================================
+function saveToLocalStorage() {
+  try {
+    const data = {
+      userAnswers,
+      answeredStatus,
+      currentSection,
+      currentQuestionIndex,
+      lastSaved: new Date().toISOString(),
+      version: '2.0'
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    lastSaved = new Date();
+    updateSaveIndicator();
+    return true;
+  } catch (e) {
+    console.error('Save failed:', e);
+    return false;
+  }
+}
+
+function loadFromLocalStorage() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return false;
+    
+    const data = JSON.parse(saved);
+    if (data.userAnswers) userAnswers = data.userAnswers;
+    if (data.answeredStatus) answeredStatus = data.answeredStatus;
+    if (data.currentSection) currentSection = data.currentSection;
+    if (data.currentQuestionIndex !== undefined) currentQuestionIndex = data.currentQuestionIndex;
+    if (data.lastSaved) lastSaved = new Date(data.lastSaved);
+    
+    ['english', 'analytical', 'quantitative'].forEach(sec => {
+      while (userAnswers[sec].length < 150) userAnswers[sec].push(null);
+      while (answeredStatus[sec].length < 150) answeredStatus[sec].push(false);
+      userAnswers[sec] = userAnswers[sec].slice(0, 150);
+      answeredStatus[sec] = answeredStatus[sec].slice(0, 150);
+    });
+    
+    return true;
+  } catch (e) {
+    console.error('Load failed:', e);
+    return false;
+  }
+}
+
+function updateSaveIndicator() {
+  const indicator = document.getElementById('saveIndicator');
+  if (lastSaved) {
+    const time = lastSaved.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    indicator.textContent = `💾 Saved ${time}`;
+  } else {
+    indicator.textContent = '💾 Not saved';
+  }
+}
+
+// ============================================================
+// QUIZ FUNCTIONS
+// ============================================================
+function startQuiz() {
+  quizStarted = true;
+  switchTab('quiz');
+  loadQuestion();
+  saveToLocalStorage();
+}
+
+function switchSection(section) {
+  currentSection = section;
+  currentQuestionIndex = 0;
+  document.querySelectorAll('.section-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.section === section);
+  });
+  loadQuestion();
+  saveToLocalStorage();
+}
+
+function loadQuestion() {
+  const questions = questionBank[currentSection];
+  const question = questions[currentQuestionIndex];
+  const totalQuestions = questions.length;
+  const answered = answeredStatus[currentSection][currentQuestionIndex];
+  const selectedAnswer = userAnswers[currentSection][currentQuestionIndex];
+  
+  const sectionNames = { english: 'English', analytical: 'Analytical', quantitative: 'Quantitative' };
+  document.getElementById('sectionLabel').textContent = sectionNames[currentSection];
+  document.getElementById('questionCounter').textContent = `Q ${currentQuestionIndex + 1} / ${totalQuestions}`;
+  
+  const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+  
+  document.getElementById('questionNumber').textContent = `Question ${currentQuestionIndex + 1}`;
+  document.getElementById('questionText').textContent = question.q;
+  
+  const optionsContainer = document.getElementById('optionsContainer');
+  optionsContainer.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  
+  question.options.forEach((option, index) => {
+    const optionDiv = document.createElement('div');
+    optionDiv.className = 'option';
+    
+    if (answered) {
+      optionDiv.classList.add('disabled');
+      if (index === question.correct) optionDiv.classList.add('correct');
+      else if (index === selectedAnswer && index !== question.correct) optionDiv.classList.add('wrong');
+    } else if (selectedAnswer === index) {
+      optionDiv.classList.add('selected');
+    }
+    
+    optionDiv.innerHTML = `
+      <div class="option-letter">${letters[index]}</div>
+      <div class="option-text">${option}</div>
+      <div class="option-icon">${answered ? (index === question.correct ? '✅' : (index === selectedAnswer ? '❌' : '')) : ''}</div>
+    `;
+    
+    if (!answered) optionDiv.onclick = () => selectAnswer(index);
+    optionsContainer.appendChild(optionDiv);
+  });
+  
+  const explanationBox = document.getElementById('explanationBox');
+  if (answered) {
+    explanationBox.classList.add('show');
+    document.getElementById('explanationText').textContent = question.explanation;
+  } else {
+    explanationBox.classList.remove('show');
+  }
+  
+  document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+  
+  const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
+  document.getElementById('nextBtn').classList.toggle('hidden', isLastQuestion);
+  document.getElementById('submitBtn').classList.toggle('hidden', !isLastQuestion);
+  
+  updateSaveIndicator();
+}
+
+function selectAnswer(index) {
+  if (answeredStatus[currentSection][currentQuestionIndex]) return;
+  userAnswers[currentSection][currentQuestionIndex] = index;
+  answeredStatus[currentSection][currentQuestionIndex] = true;
+  loadQuestion();
+  saveToLocalStorage();
+}
+
+function nextQuestion() {
+  const totalQuestions = questionBank[currentSection].length;
+  if (currentQuestionIndex < totalQuestions - 1) {
+    currentQuestionIndex++;
+    loadQuestion();
+    saveToLocalStorage();
+  }
+}
+
+function prevQuestion() {
+  if (currentQuestionIndex > 0) {
+    currentQuestionIndex--;
+    loadQuestion();
+    saveToLocalStorage();
+  }
+}
+
+// ============================================================
+// CLEAR / END / SUBMIT
+// ============================================================
+function clearAllAnswers() {
+  showModal('🗑️', 'Clear All Answers?', 'This will remove all your answers in all sections. This action cannot be undone.', () => {
+    ['english', 'analytical', 'quantitative'].forEach(sec => {
+      userAnswers[sec] = new Array(150).fill(null);
+      answeredStatus[sec] = new Array(150).fill(false);
+    });
+    currentQuestionIndex = 0;
+    loadQuestion();
+    saveToLocalStorage();
+    showDbMessage('All answers cleared successfully.', 'success');
+  });
+}
+
+function endTest() {
+  showModal('🛑', 'End Test?', 'Are you sure you want to end the test and see your results? Unanswered questions will be marked as skipped.', () => {
+    submitQuiz();
+  });
+}
+
+function submitQuiz() {
+  quizCompleted = true;
+  
+  let totalCorrect = 0, totalWrong = 0, totalSkipped = 0, totalQuestions = 0;
+  
+  ['english', 'analytical', 'quantitative'].forEach(section => {
+    questionBank[section].forEach((q, i) => {
+      totalQuestions++;
+      if (!answeredStatus[section][i]) totalSkipped++;
+      else if (userAnswers[section][i] === q.correct) totalCorrect++;
+      else totalWrong++;
+    });
+  });
+  
+  const percentage = Math.round((totalCorrect / totalQuestions) * 100);
+  
+  const scoreCircle = document.getElementById('scoreCircle');
+  scoreCircle.style.setProperty('--score-deg', (percentage / 100) * 360 + 'deg');
+  document.getElementById('scoreValue').textContent = percentage + '%';
+  
+  document.getElementById('statCorrect').textContent = totalCorrect;
+  document.getElementById('statWrong').textContent = totalWrong;
+  document.getElementById('statSkipped').textContent = totalSkipped;
+  document.getElementById('statTotal').textContent = totalQuestions;
+  
+  const resultsIcon = document.getElementById('resultsIcon');
+  const resultsTitle = document.getElementById('resultsTitle');
+  const resultsSubtitle = document.getElementById('resultsSubtitle');
+  
+  if (percentage >= 80) {
+    resultsIcon.textContent = '🏆';
+    resultsTitle.textContent = 'Excellent Performance!';
+    resultsSubtitle.textContent = 'You are well-prepared for the VU MSCS Admission Test!';
+  } else if (percentage >= 60) {
+    resultsIcon.textContent = '👍';
+    resultsTitle.textContent = 'Good Job!';
+    resultsSubtitle.textContent = 'Keep practicing to improve further.';
+  } else if (percentage >= 40) {
+    resultsIcon.textContent = '📚';
+    resultsTitle.textContent = 'Keep Studying!';
+    resultsSubtitle.textContent = 'Review the explanations and try again.';
+  } else {
+    resultsIcon.textContent = '💪';
+    resultsTitle.textContent = 'Need More Practice';
+    resultsSubtitle.textContent = "Don't give up! Review all answers and retry.";
+  }
+  
+  buildReview();
+  saveToLocalStorage();
+  switchTab('results');
+  window.scrollTo(0, 0);
+}
+
+function buildReview() {
+  const reviewList = document.getElementById('reviewList');
+  reviewList.innerHTML = '';
+  
+  const sections = [
+    { key: 'english', name: 'English / Verbal Reasoning' },
+    { key: 'analytical', name: 'Analytical Reasoning' },
+    { key: 'quantitative', name: 'Quantitative Reasoning' }
+  ];
+  
+  sections.forEach(section => {
+    const header = document.createElement('h4');
+    header.style.cssText = 'margin: 20px 0 10px; color: #0f3460; font-size: 1rem;';
+    header.textContent = `📘 ${section.name}`;
+    reviewList.appendChild(header);
+    
+    questionBank[section.key].forEach((q, i) => {
+      const isAnswered = answeredStatus[section.key][i];
+      const selected = userAnswers[section.key][i];
+      const isCorrect = isAnswered && selected === q.correct;
+      
+      const item = document.createElement('div');
+      item.className = 'review-item ' + (isCorrect ? 'correct-review' : (isAnswered ? 'wrong-review' : 'skipped-review'));
+      
+      const letters = ['A', 'B', 'C', 'D'];
+      let statusText = '', statusClass = '';
+      
+      if (!isAnswered) { statusText = '⏭️ Skipped'; statusClass = 'skipped-text'; }
+      else if (isCorrect) { statusText = '✅ Correct'; statusClass = 'correct-text'; }
+      else { statusText = '❌ Wrong'; statusClass = 'wrong-text'; }
+      
+      item.innerHTML = `
+        <div class="review-q">Q${i + 1}. ${q.q}</div>
+        <div class="review-ans ${statusClass}">${statusText}</div>
+        <div class="review-ans">Your answer: ${isAnswered ? letters[selected] + '. ' + q.options[selected] : 'Not answered'}</div>
+        <div class="review-ans correct-text">Correct answer: ${letters[q.correct]}. ${q.options[q.correct]}</div>
+        <div class="review-explanation">💡 ${q.explanation}</div>
+      `;
+      
+      reviewList.appendChild(item);
+    });
+  });
+}
+
+function restartQuiz() {
+  showModal('🔄', 'Restart Quiz?', 'This will clear all your answers and start fresh. This action cannot be undone.', () => {
+    ['english', 'analytical', 'quantitative'].forEach(sec => {
+      userAnswers[sec] = new Array(150).fill(null);
+      answeredStatus[sec] = new Array(150).fill(false);
+    });
+    currentSection = 'english';
+    currentQuestionIndex = 0;
+    quizCompleted = false;
+    
+    document.querySelectorAll('.section-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.section === 'english');
+    });
+    
+    loadQuestion();
+    saveToLocalStorage();
+    switchTab('quiz');
+    window.scrollTo(0, 0);
+  });
+}
+
+// ============================================================
+// DATABASE MANAGEMENT
+// ============================================================
+function updateDbStats() {
+  ['english', 'analytical', 'quantitative'].forEach(sec => {
+    const answered = answeredStatus[sec].filter(a => a).length;
+    const el = document.getElementById(`db${sec.charAt(0).toUpperCase() + sec.slice(1)}`);
+    if (el) el.textContent = `${answered} / 150`;
+  });
+  
+  let correct = 0, wrong = 0;
+  ['english', 'analytical', 'quantitative'].forEach(sec => {
+    questionBank[sec].forEach((q, i) => {
+      if (answeredStatus[sec][i]) {
+        if (userAnswers[sec][i] === q.correct) correct++;
+        else wrong++;
+      }
+    });
+  });
+  
+  const dbCorrect = document.getElementById('dbCorrect');
+  const dbWrong = document.getElementById('dbWrong');
+  const dbLastSaved = document.getElementById('dbLastSaved');
+  
+  if (dbCorrect) dbCorrect.textContent = correct;
+  if (dbWrong) dbWrong.textContent = wrong;
+  if (dbLastSaved) dbLastSaved.textContent = lastSaved ? lastSaved.toLocaleString() : 'Never';
+}
+
+function exportDatabase() {
+  try {
+    const data = {
+      userAnswers,
+      answeredStatus,
+      currentSection,
+      currentQuestionIndex,
+      lastSaved: new Date().toISOString(),
+      version: '2.0',
+      exportDate: new Date().toISOString()
+    };
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `VU_MSCS_Quiz_${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    showDbMessage('Database exported successfully!', 'success');
+  } catch (e) {
+    showDbMessage('Export failed: ' + e.message, 'error');
+  }
+}
+
+function importDatabase(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      
+      if (!data.userAnswers || !data.answeredStatus) {
+        throw new Error('Invalid database file format');
+      }
+      
+      userAnswers = data.userAnswers;
+      answeredStatus = data.answeredStatus;
+      currentSection = data.currentSection || 'english';
+      currentQuestionIndex = data.currentQuestionIndex || 0;
+      lastSaved = new Date();
+      
+      ['english', 'analytical', 'quantitative'].forEach(sec => {
+        while (userAnswers[sec].length < 150) userAnswers[sec].push(null);
+        while (answeredStatus[sec].length < 150) answeredStatus[sec].push(false);
+        userAnswers[sec] = userAnswers[sec].slice(0, 150);
+        answeredStatus[sec] = answeredStatus[sec].slice(0, 150);
+      });
+      
+      saveToLocalStorage();
+      loadQuestion();
+      updateDbStats();
+      
+      document.querySelectorAll('.section-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.section === currentSection);
+      });
+      
+      showDbMessage('Database imported successfully!', 'success');
+      switchTab('quiz');
+    } catch (err) {
+      showDbMessage('Import failed: ' + err.message, 'error');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function confirmReset() {
+  showModal('⚠️', 'Reset All Data?', 'This will delete all your answers and progress. This action cannot be undone.', () => {
+    localStorage.removeItem(STORAGE_KEY);
+    ['english', 'analytical', 'quantitative'].forEach(sec => {
+      userAnswers[sec] = new Array(150).fill(null);
+      answeredStatus[sec] = new Array(150).fill(false);
+    });
+    currentSection = 'english';
+    currentQuestionIndex = 0;
+    quizCompleted = false;
+    lastSaved = null;
+    
+    document.querySelectorAll('.section-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.section === 'english');
+    });
+    
+    loadQuestion();
+    updateDbStats();
+    updateSaveIndicator();
+    showDbMessage('All data has been reset.', 'info');
+  });
+}
+
+function showDbMessage(text, type) {
+  const msg = document.getElementById('dbMessage');
+  if (!msg) return;
+  msg.textContent = text;
+  msg.className = 'db-message ' + type;
+  setTimeout(() => { msg.className = 'db-message'; }, 5000);
+}
+
+// ============================================================
+// MODAL
+// ============================================================
+let modalCallback = null;
+
+function showModal(icon, title, text, callback) {
+  document.getElementById('modalIcon').textContent = icon;
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalText').textContent = text;
+  document.getElementById('modalOverlay').classList.add('show');
+  modalCallback = callback;
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+  modalCallback = null;
+}
+
+document.getElementById('modalConfirm').onclick = () => {
+  if (modalCallback) modalCallback();
+  closeModal();
+};
+
+// ============================================================
+// HELPERS
+// ============================================================
+function allQuestionsAnswered() {
+  return ['english', 'analytical', 'quantitative'].every(sec => 
+    answeredStatus[sec].every(a => a)
+  );
+}
+
+// ============================================================
+// KEYBOARD NAVIGATION
+// ============================================================
+document.addEventListener('keydown', (e) => {
+  if (!quizStarted || quizCompleted) return;
+  if (!document.getElementById('tab-quiz').classList.contains('active')) return;
+  
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); nextQuestion(); }
+  else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevQuestion(); }
+  else if (e.key >= '1' && e.key <= '4') {
+    const index = parseInt(e.key) - 1;
+    const question = questionBank[currentSection][currentQuestionIndex];
+    if (index < question.options.length && !answeredStatus[currentSection][currentQuestionIndex]) selectAnswer(index);
+  }
+  else if (e.key.toLowerCase() === 'a') selectAnswer(0);
+  else if (e.key.toLowerCase() === 'b') selectAnswer(1);
+  else if (e.key.toLowerCase() === 'c') selectAnswer(2);
+  else if (e.key.toLowerCase() === 'd') selectAnswer(3);
+});
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  const loaded = loadFromLocalStorage();
+  
+  if (loaded) {
+    document.querySelectorAll('.section-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.section === currentSection);
+    });
+    
+    const totalAnswered = ['english', 'analytical', 'quantitative'].reduce((sum, sec) => 
+      sum + answeredStatus[sec].filter(a => a).length, 0);
+    
+    if (totalAnswered > 0) {
+      quizStarted = true;
+      updateSaveIndicator();
+    }
+  }
+  
+  console.log('VU MSCS MCQ Software Loaded');
+  console.log('English: ' + questionBank.english.length);
+  console.log('Analytical: ' + questionBank.analytical.length);
+  console.log('Quantitative: ' + questionBank.quantitative.length);
+  console.log('Total: ' + (questionBank.english.length + questionBank.analytical.length + questionBank.quantitative.length));
+}
+
+window.addEventListener('beforeunload', () => {
+  if (quizStarted) saveToLocalStorage();
+});
+
+setInterval(() => {
+  if (quizStarted && !quizCompleted) saveToLocalStorage();
+}, 30000);
+
+init();
+</script>
+
+</body>
+</html>
