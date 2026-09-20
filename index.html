@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LSY Academic Services - MCQ Practice</title>
-  <title>VU MSCS Admission Test - MCQ Practice</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
@@ -32,32 +31,80 @@
     .header {
       background: linear-gradient(135deg, #0f3460, #1a1a2e);
       color: #fff;
-      padding: 15px 25px;
+      padding: 12px 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
+      position: relative;
     }
     
     .header-left {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 18px;
+      flex-wrap: wrap;
     }
     
-    .header-logo {
-      height: 60px;
-      width: auto;
-      background: #fff;
-      border-radius: 50%;
-      padding: 3px;
-      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    /* Text-based logo — light blue background */
+    .logo-text-block {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+      background: #b3d9ff;          /* light blue */
+      padding: 6px 16px 6px 14px;
+      border-radius: 40px;
+      border-left: 4px solid #e94560;
+      box-shadow: 0 0 12px rgba(179, 217, 255, 0.5);
+      transition: box-shadow 0.3s ease;
     }
     
-    .header h1 {
-      font-size: 1.2rem;
+    .logo-text-block:hover {
+      box-shadow: 0 0 20px rgba(179, 217, 255, 0.8);
+    }
+    
+    .logo-main {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: #0a1e3c;               /* dark navy for contrast */
+      text-transform: uppercase;
+      text-shadow: 0 1px 2px rgba(255,255,255,0.6);
+    }
+    
+    .logo-main span {
+      color: #b22222;               /* deep red accent */
+      font-weight: 900;
+    }
+    
+    .logo-phones {
+      font-size: 0.72rem;
       font-weight: 600;
+      color: #1e3a5f;               /* dark blue for readability */
+      letter-spacing: 0.5px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 1px;
+    }
+    
+    .logo-phones i {
+      font-style: normal;
+      color: #b22222;
+      font-weight: 700;
+      margin-right: 2px;
+    }
+    
+    /* Center the VU title */
+    .header h1 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      white-space: nowrap;
+      margin: 0 auto;               /* horizontal centering */
+      text-align: center;
+      flex: 1 1 auto;
+      min-width: 200px;
     }
     
     .header-info {
@@ -65,6 +112,7 @@
       gap: 10px;
       font-size: 0.85rem;
       flex-wrap: wrap;
+      justify-content: flex-end;
     }
     
     .header-info span {
@@ -306,7 +354,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
     
-    /* Navigation Buttons - MODIFIED LAYOUT */
+    /* Navigation Buttons */
     .nav-buttons {
       display: flex;
       justify-content: space-between;
@@ -318,7 +366,6 @@
       position: relative;
     }
     
-    /* Left group: Previous + Clear All (kept together) */
     .nav-left-group {
       display: flex;
       gap: 12px;
@@ -326,7 +373,6 @@
       flex-wrap: wrap;
     }
     
-    /* Center group: End Test exactly centered */
     .nav-center-group {
       display: flex;
       justify-content: center;
@@ -335,7 +381,6 @@
       min-width: 120px;
     }
     
-    /* Right group: Next / Submit (pushed to extreme right) */
     .nav-right-group {
       display: flex;
       gap: 12px;
@@ -779,9 +824,11 @@
     @media (max-width: 700px) {
       body { padding: 10px; }
       .container { border-radius: 12px; }
-      .header { padding: 12px 15px; }
-      .header h1 { font-size: 0.95rem; }
-      .header-logo { height: 45px; }
+      .header { padding: 10px 15px; }
+      .header h1 { font-size: 0.9rem; white-space: normal; }
+      .logo-main { font-size: 0.95rem; }
+      .logo-phones { font-size: 0.62rem; gap: 6px; }
+      .logo-text-block { padding: 5px 12px 5px 10px; }
       .main-content { padding: 18px; }
       .question-text { font-size: 1rem; }
       .option { padding: 11px 14px; }
@@ -795,7 +842,6 @@
       .tabs { font-size: 0.8rem; }
       .tab { padding: 11px 15px; font-size: 0.8rem; }
       
-      /* Stack nav groups on mobile */
       .nav-buttons {
         flex-direction: column;
         gap: 8px;
@@ -810,6 +856,21 @@
       .nav-center-group {
         order: -1;
       }
+      
+      .header-left {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
+      .header h1 {
+        margin: 0;
+        text-align: center;
+        width: 100%;
+      }
+      .header-info {
+        justify-content: center;
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -818,8 +879,15 @@
 <div class="container">
   <div class="header">
     <div class="header-left">
-      <img src="logo.png" alt="LSY Academic Services" class="header-logo" onerror="this.style.display='none'">
-      <h1>🎓 VU MSCS Admission Test</h1>
+      <!-- Non-image logo: light blue background -->
+      <div class="logo-text-block">
+        <div class="logo-main"><span>LSY</span> Academic Services</div>
+        <div class="logo-phones">
+          <span><i>📞</i> 0321-5620799</span>
+          <span><i>📞</i> 0346-7391990</span>
+        </div>
+      </div>
+      <h1>🎓 VU MS CS Admission Test</h1>
     </div>
     <div class="header-info">
       <span id="sectionLabel">English</span>
@@ -840,7 +908,7 @@
   <div class="tab-content active" id="tab-welcome">
     <div class="welcome-screen">
       <div class="welcome-icon">📝</div>
-      <h2 class="welcome-title">VU MSCS Admission Test Practice</h2>
+      <h2 class="welcome-title">VU MS CS Admission Test Practice</h2>
       <p class="welcome-subtitle">
         Practice with 450 carefully crafted MCQs covering English, Analytical Reasoning, and Quantitative Reasoning. 
         Get instant feedback, detailed explanations, and track your progress.
@@ -878,20 +946,16 @@
         </div>
       </div>
 
-      <!-- MODIFIED NAVIGATION BUTTONS: End Test centered, Next to extreme right -->
       <div class="nav-buttons">
-        <!-- Left group: Previous + Clear All -->
         <div class="nav-left-group">
           <button class="btn btn-prev" id="prevBtn" onclick="prevQuestion()">← Previous</button>
           <button class="btn btn-clear" onclick="clearAllAnswers()">🗑️ Clear All</button>
         </div>
         
-        <!-- Center group: End Test exactly centered -->
         <div class="nav-center-group">
           <button class="btn btn-end" onclick="endTest()">🛑 End Test</button>
         </div>
         
-        <!-- Right group: Next / Submit (pushed to extreme right) -->
         <div class="nav-right-group">
           <button class="btn btn-next" id="nextBtn" onclick="nextQuestion()">Next →</button>
           <button class="btn btn-submit hidden" id="submitBtn" onclick="submitQuiz()">📊 View Results</button>
@@ -1719,7 +1783,7 @@ function submitQuiz() {
   if (percentage >= 80) {
     resultsIcon.textContent = '🏆';
     resultsTitle.textContent = 'Excellent Performance!';
-    resultsSubtitle.textContent = 'You are well-prepared for the VU MSCS Admission Test!';
+    resultsSubtitle.textContent = 'You are well-prepared for the VU MS CS Admission Test!';
   } else if (percentage >= 60) {
     resultsIcon.textContent = '👍';
     resultsTitle.textContent = 'Good Job!';
